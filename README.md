@@ -34,7 +34,7 @@ Pre-built Jars can be found in the [Releases Tab](https://github.com/ssquadtea/A
 Building a Paperclip JAR for distribution:
 
 ```bash
-./gradlew applyPatches && ./gradlew createReobfPaperclipJar
+./gradlew applyPatches && ./gradlew createMojmapPaperclipJar && ./gradlew createReobfPaperclipJar
 ```
 
 
