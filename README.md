@@ -1,9 +1,6 @@
 <img src="apiary.png" alt="Apiary logo" align="right" width="200">
 <div align="center">
 
-> [!WARNING]  
-> Apiary isn't Production ready and is Heavily WIP.
-
 ## Apiary (Folia Fork)
 
 [![Github Actions Build](https://img.shields.io/badge/BUILD-PASSING-green)](https://github.com/ssquadteam/Apiary/releases)
@@ -11,6 +8,9 @@
 <h5>Apiary is an experimental Folia fork with the support for Bukkit, Paper & Spigot Plugins <a href="https://papermc.io/software/folia">Folia duh</a> designed for [The MegaHive](https://discord.gg/themegahive)</h5>
 <h8>Logo designed by <a href="https://minecraft.net/">Mojang</a> duh</h8>
 </div>
+
+> [!WARNING]  
+> Apiary is under Heavy Development & isn't recommended for production servers.
 
 ## Features
  - **Bukkit Plugins Support!** Just add folia-supported: true at the end of any plugin.yml.
