@@ -1,0 +1,87 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AltronMaxX <max06112004@gmail.com>
+Date: Tue, 6 Aug 2024 19:06:17 +0400
+Subject: [PATCH] Leaf-Virtual-Thread-for-async-scheduler
+
+
+diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+index 9000c8836bbbe9d9931d6e35d303aed71e8d4e6e..dd3d35a8870022d6f260020377c97e0be6970481 100644
+--- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
++++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+@@ -43,6 +43,8 @@ public class FoldenorConfig {
+ 
+     public static int piglinSpawnChancePersentInPortal = 100;
+ 
++    public static boolean useVirtualThreadForAsyncScheduler = false;
++
+     public static void init(File configFile) {
+         init(configFile, true);
+     }
+@@ -87,6 +89,8 @@ public class FoldenorConfig {
+ 
+         readOptimizationSettings();
+ 
++        readMiscSettings();
++
+         try {
+             readDynamicActivationOfBrains();
+         } catch (IOException e) {
+@@ -111,6 +115,11 @@ public class FoldenorConfig {
+             "Reduces piglin spawn in portal, by reducing change to spawn");
+     }
+ 
++    private static void readMiscSettings() {
++        useVirtualThreadForAsyncScheduler = getBoolean("optimizations.use-virtual-thread-for-async-scheduler", useVirtualThreadForAsyncScheduler,
++            "Use the new Virtual Thread introduced in JDK 21 for CraftAsyncScheduler.");
++    }
++
+     private static void readDynamicActivationOfBrains() throws IOException {
+         dearEnabled = getBoolean("dab.enabled",  true);
+         startDistance = getInt("dab.start-distance",  12,
+diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java
+index 3c1992e212a6d6f1db4d5b807b38d71913619fc0..3a9d20bda722447247475a8d6aa8b64252f24ca8 100644
+--- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java
++++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftAsyncScheduler.java
+@@ -25,6 +25,7 @@ package org.bukkit.craftbukkit.scheduler;
+ 
+ import com.destroystokyo.paper.ServerSchedulerReportingWrapper;
+ import com.google.common.util.concurrent.ThreadFactoryBuilder;
++import net.edenor.foldenor.config.FoldenorConfig;
+ import org.bukkit.plugin.Plugin;
+ 
+ import java.util.ArrayList;
+@@ -38,17 +39,29 @@ import java.util.concurrent.TimeUnit;
+ 
+ public class CraftAsyncScheduler extends CraftScheduler {
+ 
+-    private final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+-            4, Integer.MAX_VALUE,30L, TimeUnit.SECONDS, new SynchronousQueue<>(),
+-            new ThreadFactoryBuilder().setNameFormat("Craft Scheduler Thread - %1$d").build());
++    private final org.apache.logging.log4j.Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger(getClass().getName()); // Leaf - Class logger
++    private final Executor executor; // Leaf - use super class
+     private final Executor management = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder()
+             .setNameFormat("Craft Async Scheduler Management Thread").build());
+     private final List<CraftTask> temp = new ArrayList<>();
+ 
+     CraftAsyncScheduler() {
+         super(true);
+-        executor.allowCoreThreadTimeOut(true);
+-        executor.prestartAllCoreThreads();
++        // Leaf start - Ability to use Virtual Thread for async scheduler
++        if (FoldenorConfig.useVirtualThreadForAsyncScheduler) {
++            executor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("Craft Scheduler Thread - ", 0).factory());
++            return;
++        }
++        
++        executor = new ThreadPoolExecutor(
++            4, Integer.MAX_VALUE, 30L, TimeUnit.SECONDS, new SynchronousQueue<>(),
++            new ThreadFactoryBuilder().setNameFormat("Craft Scheduler Thread - %1$d").setUncaughtExceptionHandler(new net.minecraft.DefaultUncaughtExceptionHandlerWithName(net.minecraft.server.MinecraftServer.LOGGER)).build());
++
++        var threadPoolExecutor = (ThreadPoolExecutor) executor;
++
++        threadPoolExecutor.allowCoreThreadTimeOut(true);
++        threadPoolExecutor.prestartAllCoreThreads();
++        // Leaf end - Ability to use Virtual Thread for async scheduler
+     }
+ 
+     @Override

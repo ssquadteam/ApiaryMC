@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AltronMaxX <max06112004@gmail.com>
+Date: Wed, 7 Aug 2024 17:07:26 +0400
+Subject: [PATCH] Change '/profiler' permission
+
+
+diff --git a/src/main/java/io/papermc/paper/threadedregions/commands/CommandProfiler.java b/src/main/java/io/papermc/paper/threadedregions/commands/CommandProfiler.java
+index e36fd244f71a92d11c6ee45944948be5c1be2932..e2f2f288897cf0c2db3eba7aa5562f6edec23892 100644
+--- a/src/main/java/io/papermc/paper/threadedregions/commands/CommandProfiler.java
++++ b/src/main/java/io/papermc/paper/threadedregions/commands/CommandProfiler.java
+@@ -52,7 +52,7 @@ public final class CommandProfiler extends Command {
+         super("profiler");
+         this.setUsage("/<command> <world> <block x> <block z> <time in s> [radius, default 100 blocks]");
+         this.setDescription("Reports information about server health.");
+-        this.setPermission("bukkit.command.tps");
++        this.setPermission("paper.profiler");
+     }
+ 
+     @Override

@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AltronMaxX <max06112004@gmail.com>
+Date: Tue, 6 Aug 2024 19:38:22 +0400
+Subject: [PATCH] Divine: lithium: entity.fast_elytra_check +
+ entity.fast_hand_swing
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 33f6905706f333904ccd08f5f01ad6276b3fa24d..ac95df2d619ef79a2f07e0071523c05ea1a4d08b 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -2658,6 +2658,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+     }
+ 
+     protected void updateSwingTime() {
++        if (!this.swinging && this.swingTime == 0) return; // DivineMC - lithium: entity.fast_hand_swing
+         int i = this.getCurrentSwingDuration();
+ 
+         if (this.swinging) {
+@@ -3606,6 +3607,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+     }
+ 
+     private void updateFallFlying() {
++        if (!this.isFallFlying()) return; // DivineMC - lithium: entity.fast_elytra_check
+         boolean flag = this.getSharedFlag(7);
+ 
+         if (flag && !this.onGround() && !this.isPassenger() && !this.hasEffect(MobEffects.LEVITATION)) {

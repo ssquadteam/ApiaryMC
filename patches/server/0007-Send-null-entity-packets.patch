@@ -1,0 +1,110 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AltronMaxX <max06112004@gmail.com>
+Date: Wed, 31 Jul 2024 14:54:16 +0400
+Subject: [PATCH] Send-null-entity-packets
+
+
+diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+index 344a70e3c1274936d218757059c713bf9e75603b..c8c6631093ff2ebd23527e80778b35f9c44cc8bf 100644
+--- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
++++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+@@ -23,6 +23,8 @@ public class FoldenorConfig {
+     public static int version;
+     static boolean verbose;
+ 
++    public static boolean sendNullEntityPackets = false;
++
+     public static void init(File configFile) {
+         init(configFile, true);
+     }
+@@ -63,6 +65,7 @@ public class FoldenorConfig {
+     }
+ 
+     static void readConfig() {
++        readNetworkSettings();
+ 
+         try {
+             config.save(CONFIG_FILE);
+@@ -71,6 +74,10 @@ public class FoldenorConfig {
+         }
+     }
+ 
++    protected static void readNetworkSettings(){
++        sendNullEntityPackets = getBoolean("network.send-null-entity-packets", sendNullEntityPackets);
++    }
++
+     protected static void set(String path, Object val) {
+         config.addDefault(path, val);
+         config.set(path, val);
+diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
+index 8ea2f24695f5dad55e21f238b69442513e7a90c6..38ca0acf3a1af7dcdd9e87e6d9e2e14c6d3fad41 100644
+--- a/src/main/java/net/minecraft/server/level/ServerEntity.java
++++ b/src/main/java/net/minecraft/server/level/ServerEntity.java
+@@ -50,6 +50,7 @@ import net.minecraft.server.network.ServerPlayerConnection;
+ import net.minecraft.util.Mth;
+ import org.bukkit.entity.Player;
+ import org.bukkit.event.player.PlayerVelocityEvent;
++import net.edenor.foldenor.config.FoldenorConfig;
+ // CraftBukkit end
+ 
+ public class ServerEntity {
+@@ -212,6 +213,9 @@ public class ServerEntity {
+                     packet1 = new ClientboundTeleportEntityPacket(this.entity);
+                     flag4 = true;
+                     flag5 = true;
++                    if (!FoldenorConfig.sendNullEntityPackets && isNullMovePacket(packet1)) {
++                        packet1 = null;
++                    }
+                 }
+ 
+                 if ((this.trackDelta || this.entity.hasImpulse || this.entity instanceof LivingEntity && ((LivingEntity) this.entity).isFallFlying()) && this.tickCount > 0) {
+@@ -288,6 +292,18 @@ public class ServerEntity {
+ 
+     }
+ 
++    private boolean isNullMovePacket(Packet<?> packet) {
++        if (packet instanceof ClientboundMoveEntityPacket move) {
++            if (packet instanceof ClientboundMoveEntityPacket.Pos)
++                return move.getXa() == 0 && move.getYa() == 0 && move.getZa() == 0;
++            if (packet instanceof ClientboundMoveEntityPacket.PosRot)
++                return move.getXa() == 0 && move.getYa() == 0 && move.getZa() == 0 && move.getyRot() == 0 && move.getxRot() == 0;
++            if (packet instanceof ClientboundMoveEntityPacket.Rot)
++                return move.getyRot() == 0 && move.getxRot() == 0;
++        }
++        return false;
++    }
++
+     private static Stream<Entity> removedPassengers(List<Entity> passengers, List<Entity> lastPassengers) {
+         return lastPassengers.stream().filter((entity) -> {
+             return !passengers.contains(entity);
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 7a102b4e90fbc09b8653e5b566299efe24a04cf6..d1164f15c6b9ae221f6cae2bdb7d040cfa3cbccf 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -27,6 +27,8 @@ import java.util.function.BiConsumer;
+ import java.util.function.Predicate;
+ import java.util.stream.Stream;
+ import javax.annotation.Nullable;
++
++import net.edenor.foldenor.config.FoldenorConfig;
+ import net.minecraft.BlockUtil;
+ import net.minecraft.CrashReport;
+ import net.minecraft.CrashReportCategory;
+@@ -1175,7 +1177,16 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+                     }
+                 }
+ 
+-                this.setPos(this.getX() + vec3d1.x, this.getY() + vec3d1.y, this.getZ() + vec3d1.z);
++                try {
++                    this.setPos(this.getX() + vec3d1.x, this.getY() + vec3d1.y, this.getZ() + vec3d1.z);
++                } catch (IllegalStateException e) {
++                    this.teleportAsync((ServerLevel) this.level(), this.position().add(vec3d1),
++                        this.getYRot(), this.getXRot(),
++                        Vec3.ZERO, PlayerTeleportEvent.TeleportCause.UNKNOWN,
++                        Entity.TELEPORT_FLAG_LOAD_CHUNK | Entity.TELEPORT_FLAG_TELEPORT_PASSENGERS,
++                        null
++                    );
++                }
+             }
+ 
+             this.level().getProfiler().pop();
