@@ -1,0 +1,43 @@
+name: Build ApiaryMC 1.21.1
+
+on:
+  push:
+    branches: [ "1.21.1" ]
+  workflow_dispatch:
+
+jobs:
+  compile_1_21_1_core_jar:
+    runs-on: windows-latest
+    
+    permissions:
+       contents: write
+       actions: write
+       
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v4
+        
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v2
+        
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+        
+      - name: Configure Git User Details
+        run: |
+          git config --global user.email "actions@github.com" && git config --global user.name "Github Actions"
+
+      - name: Apply Patches
+        run: ./gradlew applyPatches
+   
+      - name: Build MojmapPaperclip
+        run: ./gradlew createMojmapPaperclipJar
+        
+      - name: Build ReobfPaperclip
+        run: ./gradlew createReobfPaperclipJar
