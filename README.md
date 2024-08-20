@@ -5,7 +5,7 @@
 
 [![Github Actions Build](https://img.shields.io/badge/BUILD-PASSING-green)](https://github.com/ssquadteam/Apiary/releases)
 
-<h5>Apiary is an experimental Folia fork with the support for Bukkit, Paper & Spigot Plugins <a href="https://papermc.io/software/folia">Folia duh</a> designed for [The MegaHive](https://discord.gg/themegahive)</h5>
+<h5>Apiary is an experimental Folia fork with the support for Bukkit, Paper & Spigot Plugins <a href="https://papermc.io/software/folia">Folia duh</a> designed for <a href="https://discord.gg/themegahive">The MegaHive</a></h5>
 <h8>Logo designed by <a href="https://minecraft.net/">Mojang</a> duh</h8>
 </div>
 
