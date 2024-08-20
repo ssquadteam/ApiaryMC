@@ -22,7 +22,7 @@ index f0a90d13a17160cd363d54d494add4f6433b4758..0a9bcd472022cd7ea57110dd24928d5b
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
 -            "Implementation-Title" to "Folia", // Folia
-+            "Implementation-Title" to "Apiary", // Folia
++            "Implementation-Title" to "ApiaryMC", // Folia
              "Implementation-Version" to implementationVersion,
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Folia", // Folia
@@ -30,9 +30,9 @@ index f0a90d13a17160cd363d54d494add4f6433b4758..0a9bcd472022cd7ea57110dd24928d5b
 -            "Specification-Vendor" to "Paper Team",
 -            "Brand-Id" to "papermc:folia", // Folia
 -            "Brand-Name" to "Folia", // Folia
-+            "Specification-Vendor" to "The-Fafnir",
-+            "Brand-Id" to "the-fafnir:apiary", // Folia
-+            "Brand-Name" to "Apiary", // Folia
++            "Specification-Vendor" to "ssquadteam",
++            "Brand-Id" to "ssquadteam:ApiaryMC", // Folia
++            "Brand-Name" to "ApiaryMC", // Folia
              "Build-Number" to (build ?: ""),
              "Build-Time" to Instant.now().toString(),
              "Git-Branch" to gitBranch, // Paper
@@ -45,7 +45,7 @@ index cb60d58d4a7556dd896f31d0cd249f860bb3ef84..04403a5dadc5a4d2d5503a57c49011cb
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
 -                Metrics metrics = new Metrics("Folia", serverUUID, logFailedRequests, Bukkit.getLogger()); // Folia - we have our own bstats page
-+                Metrics metrics = new Metrics("Apiary", serverUUID, logFailedRequests, Bukkit.getLogger()); // Folia - we have our own bstats page
++                Metrics metrics = new Metrics("ApiaryMC", serverUUID, logFailedRequests, Bukkit.getLogger()); // Folia - we have our own bstats page
 
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
@@ -67,7 +67,7 @@ index 29bd788ae8bc61c1e62a4f84b9e259931a7041ce..af641e981757dc132e1a4e1d846cf5d9
      private static final int DISTANCE_ERROR = -1;
      private static final int DISTANCE_UNKNOWN = -2;
 -    private static final String DOWNLOAD_PAGE = "https://papermc.io/downloads/paper";
-+    private static final String DOWNLOAD_PAGE = "https://github.com/The-Fafnir/Apiary";
++    private static final String DOWNLOAD_PAGE = "https://github.com/ssquadteam/ApiaryMC";
 
      @Override
      public long getCacheTime() {
@@ -76,7 +76,7 @@ index 29bd788ae8bc61c1e62a4f84b9e259931a7041ce..af641e981757dc132e1a4e1d846cf5d9
              updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
          } else {
 -            updateMessage = getUpdateStatusMessage("PaperMC/Folia", build); // Folia
-+            updateMessage = getUpdateStatusMessage("The-Fafnir/Apiary", build); // Folia
++            updateMessage = getUpdateStatusMessage("ssquadteam/ApiaryMC", build); // Folia
          }
          final @Nullable Component history = this.getHistory();
 
@@ -109,7 +109,7 @@ index e741201fdbea0dbbc0e42313ebd33368014c9dc4..357f38b144f21c0d0920bb8008afbda7
      private static final String ATTRIBUTE_GIT_COMMIT = "Git-Commit";
 
 -    private static final String BRAND_PAPER_NAME = "Paper";
-+    private static final String BRAND_PAPER_NAME = "Apiary";
++    private static final String BRAND_PAPER_NAME = "ApiaryMC";
 
      private static final String BUILD_DEV = "DEV";
 
@@ -118,10 +118,10 @@ index e741201fdbea0dbbc0e42313ebd33368014c9dc4..357f38b144f21c0d0920bb8008afbda7
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_ID)
                  .map(Key::key)
 -                .orElse(Key.key("papermc", "folia")), // Folia
-+                .orElse(Key.key("the-fafnir", "apiary")), // Folia
++                .orElse(Key.key("ssquadteam", "ApiaryMC")), // Folia
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_NAME)
 -                .orElse("Folia"), // Folia
-+                .orElse("Apiary"), // Folia
++                .orElse("ApiaryMC"), // Folia
              SharedConstants.getCurrentVersion().getId(),
              SharedConstants.getCurrentVersion().getName(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
