@@ -31,7 +31,7 @@ index f0a90d13a17160cd363d54d494add4f6433b4758..0a9bcd472022cd7ea57110dd24928d5b
 -            "Brand-Id" to "papermc:folia", // Folia
 -            "Brand-Name" to "Folia", // Folia
 +            "Specification-Vendor" to "ssquadteam",
-+            "Brand-Id" to "ssquadteam:ApiaryMC", // Folia
++            "Brand-Id" to "ssquadteam:apiarymc", // Folia
 +            "Brand-Name" to "ApiaryMC", // Folia
              "Build-Number" to (build ?: ""),
              "Build-Time" to Instant.now().toString(),
