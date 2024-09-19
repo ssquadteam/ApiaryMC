@@ -4,11 +4,11 @@ Date: Mon, 12 Aug 2024 15:40:15 +0400
 Subject: [PATCH] Lumina PCA-sync-protocol
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index 448c311508b57978a76713da538580cf4beba9dc..197954520907e99b7523b3543612bad751d9e969 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -110,6 +110,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -110,6 +110,8 @@ public class ApiaryConfig {
  
          projectileTimeouts();
  
@@ -17,7 +17,7 @@ index 448c311508b57978a76713da538580cf4beba9dc..197954520907e99b7523b3543612bad7
          try {
              readDynamicActivationOfBrains();
          } catch (IOException e) {
-@@ -205,6 +207,21 @@ public class FoldenorConfig {
+@@ -205,6 +207,21 @@ public class ApiaryConfig {
          }
      }
  
@@ -48,7 +48,7 @@ index 1f5ed236fb7c0c1b0181675747d25d233f534284..f0f521411cdfb7b8016fb22f715b3d28
  import java.util.function.Predicate;
  import javax.annotation.Nullable;
 +
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.advancements.CriteriaTriggers;
  import net.minecraft.core.BlockPos;
  import net.minecraft.core.Direction;
@@ -57,7 +57,7 @@ index 1f5ed236fb7c0c1b0181675747d25d233f534284..f0f521411cdfb7b8016fb22f715b3d28
      @Override
      public void containerChanged(Container sender) {
 +        // Leaves start - pca
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncEntityToClient(this);
 +        }
 +        // Leaves end - pca
@@ -73,7 +73,7 @@ index 5f3104b2a46d4b47cf505012438f848e3b744315..5425f0b39175ebe273c1577de4001a31
  import java.util.Objects;
  import javax.annotation.Nullable;
 +
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.Util;
  import net.minecraft.advancements.CriteriaTriggers;
  import net.minecraft.core.particles.ParticleOptions;
@@ -84,7 +84,7 @@ index 5f3104b2a46d4b47cf505012438f848e3b744315..5425f0b39175ebe273c1577de4001a31
 +        // Leaves start - pca
 +        if (!this.level().isClientSide()) {
 +            this.inventory.addListener(inventory -> {
-+                if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++                if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +                    org.leavesmc.leaves.protocol.PcaSyncProtocol.syncEntityToClient(this);
 +                }
 +            });
@@ -104,7 +104,7 @@ index 9549eee0d92f322bd5232abd7e695213660c2e22..76b7b1dfbc7ba0eab32ecfb5b00b01fd
 -    public void setChanged() {}
 +    public void setChanged() {
 +        // Leaves start - pca
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncEntityToClient(this);
 +        }
 +        // Leaves end - pca
@@ -124,7 +124,7 @@ index 730aca233f6e7564d4cb85b5b628d23c4f01d2f4..e345703bd95901ff306380c6c18ebd15
 +    @Override
 +    public void setChanged() {
 +        super.setChanged();
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +    }
@@ -145,7 +145,7 @@ index 6186e55014bbb9d5bedaa0e9d196879c55339d42..88bd1ddcfbe03a4bb166691b3c28612c
 +    @Override
 +    public void setChanged() {
 +        super.setChanged();
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +    }
@@ -163,7 +163,7 @@ index f933fa419a4b55b0096ff42caf1b071d027b8e7e..a23f5de13a6a9d832018952e597680b5
          }
  
 +        // Leaves start - pca
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +        // Leaves end - pca
@@ -175,7 +175,7 @@ index f933fa419a4b55b0096ff42caf1b071d027b8e7e..a23f5de13a6a9d832018952e597680b5
              }
  
 +            // Leaves start - pca
-+            if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++            if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +                org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +            }
 +            // Leaves end - pca
@@ -188,7 +188,7 @@ index f933fa419a4b55b0096ff42caf1b071d027b8e7e..a23f5de13a6a9d832018952e597680b5
                      flag = true;
                      iterator.remove();
 +                    // Leaves start - pca
-+                    if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++                    if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +                        org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(Objects.requireNonNull(world.getBlockEntity(pos)));
 +                    }
 +                    // Leaves end - pca
@@ -200,7 +200,7 @@ index f933fa419a4b55b0096ff42caf1b071d027b8e7e..a23f5de13a6a9d832018952e597680b5
          }
          // CraftBukkit end
 +        // Leaves start - pca
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +        // Leaves end - pca
@@ -219,7 +219,7 @@ index 46011ababdadaafd72a8717911e49f6581ab5688..1d70b273e12f7dea799f93ce75bf85e4
 +    @Override
 +    public void setChanged() {
 +        super.setChanged();
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +    }
@@ -240,7 +240,7 @@ index b88aa184cd06a0485146f58a5b61a56a50911209..7b652017c08a419d652420f3e8ec6836
 +    @Override
 +    public void setChanged() {
 +        super.setChanged();
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +    }
@@ -261,7 +261,7 @@ index 431fb6a658c6aac43b6f9dbd1f578b83f261a4e3..75df0fc2eb581b36713001f1f43912ff
 +    @Override
 +    public void setChanged() {
 +        super.setChanged();
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +    }
@@ -282,7 +282,7 @@ index 1035a68aaeb9c50752a03cd72fe65c5eb7e8746c..1aab9e49b8046f926f7c6e0d7d535f23
 +    @Override
 +    public void setChanged() {
 +        super.setChanged();
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +    }
@@ -296,7 +296,7 @@ index 1035a68aaeb9c50752a03cd72fe65c5eb7e8746c..1aab9e49b8046f926f7c6e0d7d535f23
                      blockEntity.setCooldown(world.spigotConfig.hopperTransfer); // Spigot
                      setChanged(world, pos, state);
 +                    // Leaves start - pca
-+                    if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++                    if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +                        org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(blockEntity);
 +                    }
 +                    // Leaves end - pca
@@ -315,7 +315,7 @@ index 0d68db20f5fbe5e834f12c1e8fd429099a44e4b6..8355c1ab072cbc68517a177a9a298010
 +    @Override
 +    public void setChanged() {
 +        super.setChanged();
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            org.leavesmc.leaves.protocol.PcaSyncProtocol.syncBlockEntityToClient(this);
 +        }
 +    }
@@ -333,7 +333,7 @@ index 0000000000000000000000000000000000000000..0b29f88c87b453f02c48e3006fca574c
 +package org.leavesmc.leaves.protocol;
 +
 +import com.mojang.logging.LogUtils;
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
 +import net.minecraft.core.BlockPos;
 +import net.minecraft.nbt.CompoundTag;
 +import net.minecraft.network.FriendlyByteBuf;
@@ -397,14 +397,14 @@ index 0000000000000000000000000000000000000000..0b29f88c87b453f02c48e3006fca574c
 +
 +    @ProtocolHandler.PlayerJoin
 +    private static void onJoin(ServerPlayer player) {
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            enablePcaSyncProtocol(player);
 +        }
 +    }
 +
 +    @ProtocolHandler.ReloadServer
 +    private static void onServerReload() {
-+        if (net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            enablePcaSyncProtocolGlobal();
 +        } else {
 +            disablePcaSyncProtocolGlobal();
@@ -413,7 +413,7 @@ index 0000000000000000000000000000000000000000..0b29f88c87b453f02c48e3006fca574c
 +
 +    @ProtocolHandler.PayloadReceiver(payload = EmptyPayload.class, payloadId = "cancel_sync_block_entity")
 +    private static void cancelSyncBlockEntityHandler(ServerPlayer player, EmptyPayload payload) {
-+        if (!net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (!net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            return;
 +        }
 +        PcaSyncProtocol.clearPlayerWatchBlock(player);
@@ -421,7 +421,7 @@ index 0000000000000000000000000000000000000000..0b29f88c87b453f02c48e3006fca574c
 +
 +    @ProtocolHandler.PayloadReceiver(payload = EmptyPayload.class, payloadId = "cancel_sync_entity")
 +    private static void cancelSyncEntityHandler(ServerPlayer player, EmptyPayload payload) {
-+        if (!net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (!net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            return;
 +        }
 +        PcaSyncProtocol.clearPlayerWatchEntity(player);
@@ -429,7 +429,7 @@ index 0000000000000000000000000000000000000000..0b29f88c87b453f02c48e3006fca574c
 +
 +    @ProtocolHandler.PayloadReceiver(payload = SyncBlockEntityPayload.class, payloadId = "sync_block_entity")
 +    private static void syncBlockEntityHandler(ServerPlayer player, SyncBlockEntityPayload payload) {
-+        if (!net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (!net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            return;
 +        }
 +        MinecraftServer server = MinecraftServer.getServer();
@@ -472,7 +472,7 @@ index 0000000000000000000000000000000000000000..0b29f88c87b453f02c48e3006fca574c
 +
 +    @ProtocolHandler.PayloadReceiver(payload = SyncEntityPayload.class, payloadId = "sync_entity")
 +    private static void syncEntityHandler(ServerPlayer player, SyncEntityPayload payload) {
-+        if (!net.edenor.foldenor.config.FoldenorConfig.pcaSyncProtocolEnabled) {
++        if (!net.ssquadteam.apiary.config.ApiaryConfig.pcaSyncProtocolEnabled) {
 +            return;
 +        }
 +        MinecraftServer server = MinecraftServer.getServer();
@@ -483,18 +483,18 @@ index 0000000000000000000000000000000000000000..0b29f88c87b453f02c48e3006fca574c
 +            if (entity != null) {
 +                clearPlayerWatchData(player);
 +                if (entity instanceof Player) {
-+                    if (FoldenorConfig.pcaSyncProtocolOption == FoldenorConfig.SyncOption.NOBODY) {
++                    if (ApiaryConfig.pcaSyncProtocolOption == ApiaryConfig.SyncOption.NOBODY) {
 +                        return;
-+                    } else if (FoldenorConfig.pcaSyncProtocolOption == FoldenorConfig.SyncOption.BOT) {
++                    } else if (ApiaryConfig.pcaSyncProtocolOption == ApiaryConfig.SyncOption.BOT) {
 +                        // if (!(entity instanceof ServerBot)) { // TODO
 +                        //     return;
 +                        // }
-+                    } else if (FoldenorConfig.pcaSyncProtocolOption == FoldenorConfig.SyncOption.OPS) {
++                    } else if (ApiaryConfig.pcaSyncProtocolOption == ApiaryConfig.SyncOption.OPS) {
 +                        // !(entity instanceof ServerBot) && // TODO
 +                        if (server.getProfilePermissions(player.getGameProfile()) < 2) {
 +                            return;
 +                        }
-+                    } else if (FoldenorConfig.pcaSyncProtocolOption == FoldenorConfig.SyncOption.OPS_AND_SELF) {
++                    } else if (ApiaryConfig.pcaSyncProtocolOption == ApiaryConfig.SyncOption.OPS_AND_SELF) {
 +                        // !(entity instanceof ServerBot) && // TODO
 +                        if (server.getProfilePermissions(player.getGameProfile()) < 2 &&
 +                                entity != player) {

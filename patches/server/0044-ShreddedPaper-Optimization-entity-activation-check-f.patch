@@ -5,11 +5,11 @@ Subject: [PATCH] ShreddedPaper: Optimization:
  entity-activation-check-frequency
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index 197954520907e99b7523b3543612bad751d9e969..4d2f828ef93673cf24d038d4645838bba194f887 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -60,6 +60,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -60,6 +60,8 @@ public class ApiaryConfig {
      public static EnumRegionFileExtension regionFormatType;
      public static int linearFlushThreads = 1;
  
@@ -18,7 +18,7 @@ index 197954520907e99b7523b3543612bad751d9e969..4d2f828ef93673cf24d038d4645838bb
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -135,6 +137,7 @@ public class FoldenorConfig {
+@@ -135,6 +137,7 @@ public class ApiaryConfig {
          piglinSpawnChancePersentInPortal = getInt("optimizations.piglin-spawn-chance-persent-in-portal", 100,
              "Reduces piglin spawn in portal, by reducing change to spawn");
          skipMapItemUpdatesIfNoBukkitRender = getBoolean("optimizations.skip_map_item_updates_if_no_bukkit_render", skipMapItemUpdatesIfNoBukkitRender);
@@ -33,7 +33,7 @@ index 69784dbf1fc50b27d15582ca058b7b0027fa49ae..f758fdf1d6e4d42f0fcdb11026988c1b
 @@ -1,5 +1,6 @@
  package org.spigotmc;
  
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.core.BlockPos;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.level.ServerChunkCache;
@@ -41,7 +41,7 @@ index 69784dbf1fc50b27d15582ca058b7b0027fa49ae..f758fdf1d6e4d42f0fcdb11026988c1b
  
          for ( Player player : world.getLocalPlayers() ) // Folia - region threading
          {
-+            if (FoldenorConfig.entityActivationCheckFrequency > 1 && (player.getId() + io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick()) % FoldenorConfig
++            if (ApiaryConfig.entityActivationCheckFrequency > 1 && (player.getId() + io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick()) % ApiaryConfig
 +                .entityActivationCheckFrequency != 0) continue; // ShreddedPaper - Configurable entity activation check frequency
              player.activatedTick = io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick(); // Folia - region threading
              if ( world.spigotConfig.ignoreSpectatorActivation && player.isSpectator() )
@@ -51,18 +51,18 @@ index 69784dbf1fc50b27d15582ca058b7b0027fa49ae..f758fdf1d6e4d42f0fcdb11026988c1b
      private static void activateEntity(Entity entity, AABB[] bbByType) // Folia - threaded regions
      {
 -        if ( io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick() > entity.activatedTick ) // Folia - threaded regions
-+        if ( io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick() + Math.max(0, FoldenorConfig.entityActivationCheckFrequency) > entity.activatedTick ) // Folia - threaded regions // ShreddedPaper - Configurable entity activation check frequency
++        if ( io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick() + Math.max(0, ApiaryConfig.entityActivationCheckFrequency) > entity.activatedTick ) // Folia - threaded regions // ShreddedPaper - Configurable entity activation check frequency
          {
              if ( entity.defaultActivationState )
              {
 -                entity.activatedTick = io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick(); // Folia - threaded regions
-+                entity.activatedTick = io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick() + Math.max(0, FoldenorConfig.entityActivationCheckFrequency); // Folia - threaded regions // ShreddedPaper - Configurable entity activation check frequency
++                entity.activatedTick = io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick() + Math.max(0, ApiaryConfig.entityActivationCheckFrequency); // Folia - threaded regions // ShreddedPaper - Configurable entity activation check frequency
                  return;
              }
              if ( bbByType[entity.activationType.ordinal()].intersects( entity.getBoundingBox() ) ) // Folia - threaded regions
              {
 -                entity.activatedTick = io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick(); // Folia - threaded regions
-+                entity.activatedTick = io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick() + Math.max(0, FoldenorConfig.entityActivationCheckFrequency); // Folia - threaded regions // ShreddedPaper - Configurable entity activation check frequency
++                entity.activatedTick = io.papermc.paper.threadedregions.RegionizedServer.getCurrentTick() + Math.max(0, ApiaryConfig.entityActivationCheckFrequency); // Folia - threaded regions // ShreddedPaper - Configurable entity activation check frequency
              }
          }
      }

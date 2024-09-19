@@ -62,11 +62,11 @@ index 3218cbf84f54daf06e84442d5eb1a36d8da6b215..ec9b27177dc526510e86d85f48f167b4
  
              synchronized (cache) {
                  regionFile = ((ChunkSystemRegionFileStorage)(Object)cache).moonrise$getRegionFileIfLoaded(chunkX, chunkZ);
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675366b8a10 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -2,6 +2,7 @@ package net.edenor.foldenor.config;
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -2,6 +2,7 @@ package net.ssquadteam.apiary.config;
  
  import com.google.common.base.Throwables;
  import com.google.common.collect.ImmutableMap;
@@ -88,15 +88,15 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675
  import java.util.Map;
  import java.util.logging.Level;
 +
- public class FoldenorConfig {
-     protected static final String HEADER = "This is the main configuration file for Foldenor.";
+ public class ApiaryConfig {
+     protected static final String HEADER = "This is the main configuration file for Apiary.";
      protected static File CONFIG_FILE;
      public static YamlConfiguration config;
 +    private static final Logger logger = LogUtils.getLogger();
  
      public static int version;
      static boolean verbose;
-@@ -47,6 +52,13 @@ public class FoldenorConfig {
+@@ -47,6 +52,13 @@ public class ApiaryConfig {
  
      public static boolean skipMapItemUpdatesIfNoBukkitRender = true;
  
@@ -110,7 +110,7 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -93,6 +105,8 @@ public class FoldenorConfig {
+@@ -93,6 +105,8 @@ public class ApiaryConfig {
  
          readMiscSettings();
  
@@ -119,7 +119,7 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675
          try {
              readDynamicActivationOfBrains();
          } catch (IOException e) {
-@@ -123,6 +137,31 @@ public class FoldenorConfig {
+@@ -123,6 +137,31 @@ public class ApiaryConfig {
              "Use the new Virtual Thread introduced in JDK 21 for CraftAsyncScheduler.");
      }
  
@@ -270,7 +270,7 @@ index 40689256711cc94a806ca1da346f4f62eda31526..88c0a8176177ef251908a82b24f57195
  import java.nio.file.Path;
  import javax.annotation.Nullable;
 +
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.FileUtil;
  import net.minecraft.nbt.CompoundTag;
  import net.minecraft.nbt.NbtAccounter;
@@ -289,7 +289,7 @@ index 40689256711cc94a806ca1da346f4f62eda31526..88c0a8176177ef251908a82b24f57195
      private final it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet nonExistingRegionFiles = new it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet(MAX_NON_EXISTING_CACHE+1);
 +    // Leaf start - Linear region format
      private static String getRegionFileName(final int chunkX, final int chunkZ) {
-+        if (FoldenorConfig.regionFormatType == org.stupidcraft.linearpaper.region.EnumRegionFileExtension.LINEAR) {
++        if (ApiaryConfig.regionFormatType == org.stupidcraft.linearpaper.region.EnumRegionFileExtension.LINEAR) {
 +            return "r." + (chunkX >> REGION_SHIFT) + "." + (chunkZ >> REGION_SHIFT) + ".linear";
 +        }
          return "r." + (chunkX >> REGION_SHIFT) + "." + (chunkZ >> REGION_SHIFT) + ".mca";
@@ -559,14 +559,14 @@ index 0000000000000000000000000000000000000000..087734ea2186c6ee14069b27b09067ce
 +        final String extensionName = fullNameSplit[fullNameSplit.length - 1];
 +        switch (EnumRegionFileExtension.fromExtension(extensionName)) {
 +            case UNKNOWN -> {
-+                if (net.edenor.foldenor.config.FoldenorConfig.throwOnUnknownExtension) {
++                if (net.ssquadteam.apiary.config.ApiaryConfig.throwOnUnknownExtension) {
 +                    throw new IllegalArgumentException("Unknown region file extension for file: " + fullFileName + "!");
 +                }
 +
 +                return new RegionFile(storageKey, path, directory, compressionFormat, dsync);
 +            }
 +            case LINEAR -> {
-+                return new LinearRegionFile(path, net.edenor.foldenor.config.FoldenorConfig.linearCompressionLevel);
++                return new LinearRegionFile(path, net.ssquadteam.apiary.config.ApiaryConfig.linearCompressionLevel);
 +            }
 +            default -> {
 +                return new RegionFile(storageKey, path, directory, compressionFormat, dsync);
@@ -895,7 +895,7 @@ index 0000000000000000000000000000000000000000..b7431e26c27a3af641e0889cbd370e62
 +package org.stupidcraft.linearpaper.region;
 +
 +import com.google.common.util.concurrent.ThreadFactoryBuilder;
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
 +import org.bukkit.Bukkit;
 +
 +import java.util.Queue;
@@ -913,15 +913,15 @@ index 0000000000000000000000000000000000000000..b7431e26c27a3af641e0889cbd370e62
 +            .build()
 +    );
 +    private final ExecutorService executor = Executors.newFixedThreadPool(
-+        FoldenorConfig.linearFlushThreads,
++        ApiaryConfig.linearFlushThreads,
 +        new ThreadFactoryBuilder()
 +            .setNameFormat("linear-flusher-%d")
 +            .build()
 +    );
 +
 +    public LinearRegionFileFlusher() {
-+        Bukkit.getLogger().info("Using " + FoldenorConfig.linearFlushThreads + " threads for linear region flushing.");
-+        scheduler.scheduleAtFixedRate(this::pollAndFlush, 0L, FoldenorConfig.linearFlushFrequency, TimeUnit.SECONDS);
++        Bukkit.getLogger().info("Using " + ApiaryConfig.linearFlushThreads + " threads for linear region flushing.");
++        scheduler.scheduleAtFixedRate(this::pollAndFlush, 0L, ApiaryConfig.linearFlushFrequency, TimeUnit.SECONDS);
 +    }
 +
 +    public void scheduleSave(LinearRegionFile regionFile) {

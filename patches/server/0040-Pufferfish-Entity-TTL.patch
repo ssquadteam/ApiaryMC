@@ -4,10 +4,10 @@ Date: Mon, 12 Aug 2024 15:27:53 +0400
 Subject: [PATCH] Pufferfish Entity TTL
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index db2c92e8fd7d811639f3fb0bb7cff675366b8a10..448c311508b57978a76713da538580cf4beba9dc 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 @@ -20,6 +20,7 @@ import java.lang.reflect.Method;
  import java.lang.reflect.Modifier;
  import java.util.Collections;
@@ -16,7 +16,7 @@ index db2c92e8fd7d811639f3fb0bb7cff675366b8a10..448c311508b57978a76713da538580cf
  import java.util.Map;
  import java.util.logging.Level;
  
-@@ -107,6 +108,8 @@ public class FoldenorConfig {
+@@ -107,6 +108,8 @@ public class ApiaryConfig {
  
          readRegionFormatSettings();
  
@@ -25,7 +25,7 @@ index db2c92e8fd7d811639f3fb0bb7cff675366b8a10..448c311508b57978a76713da538580cf
          try {
              readDynamicActivationOfBrains();
          } catch (IOException e) {
-@@ -186,6 +189,22 @@ public class FoldenorConfig {
+@@ -186,6 +189,22 @@ public class ApiaryConfig {
                      }, () -> MinecraftServer.LOGGER.warn("Unknown entity \"" + name + "\"")));
      }
  
