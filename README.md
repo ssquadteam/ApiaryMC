@@ -3,7 +3,7 @@
 
 ## Apiary (Folia Fork)
 
-[![Github Actions Build](https://img.shields.io/badge/BUILD-PASSING-green)](https://github.com/ssquadteam/Apiary/releases)
+[![Github Actions Build](https://img.shields.io/badge/BUILD-PASSING-green)](https://github.com/ssquadteam/ApiaryMC/releases)
 
 <h5>Apiary is an experimental <a href="https://papermc.io/software/folia">Folia</a> fork with the support for Bukkit, Paper & Spigot Plugins designed for <a href="https://discord.gg/themegahive">The MegaHive</a></h5>
 <h8>Logo designed by <a href="https://minecraft.net/">Mojang</a> duh</h8>
@@ -14,7 +14,7 @@
 
 ## Features
  - **Bukkit Plugins Support!** Just add folia-supported: true at the end of any plugin.yml.
- - **Various patches** blending from [other forks](https://github.com/ssquadteam/Apiary#credits).
+ - **Various patches** blending from [other forks](https://github.com/ssquadteam/ApiaryMC#credits).
  - **Better Region Format** Support for the Linear region file format from [LinearPurpur](https://github.com/StupidCraft/LinearPurpur)
  - ...
 
@@ -26,7 +26,7 @@
 
 ## Downloads
 
-Pre-built Jars can be found in the [Releases Tab](https://github.com/ssquadtea/Apiary/releases)
+Pre-built Jars can be found in the [Releases Tab](https://github.com/ssquadtea/ApiaryMC/releases)
 
 
 ## Building

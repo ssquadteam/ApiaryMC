@@ -32,7 +32,7 @@ index f0a90d13a17160cd363d54d494add4f6433b4758..0a9bcd472022cd7ea57110dd24928d5b
 -            "Brand-Name" to "Folia", // Folia
 +            "Specification-Vendor" to "ssquadteam",
 +            "Brand-Id" to "ssquadteam:apiarymc", // Folia
-+            "Brand-Name" to "ApiaryMC", // Folia
++            "Brand-Name" to "apiarymc", // Folia
              "Build-Number" to (build ?: ""),
              "Build-Time" to Instant.now().toString(),
              "Git-Branch" to gitBranch, // Paper
@@ -118,10 +118,10 @@ index e741201fdbea0dbbc0e42313ebd33368014c9dc4..357f38b144f21c0d0920bb8008afbda7
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_ID)
                  .map(Key::key)
 -                .orElse(Key.key("papermc", "folia")), // Folia
-+                .orElse(Key.key("ssquadteam", "ApiaryMC")), // Folia
++                .orElse(Key.key("ssquadteam", "apiarymc")), // Folia
              getManifestAttribute(manifest, ATTRIBUTE_BRAND_NAME)
 -                .orElse("Folia"), // Folia
-+                .orElse("ApiaryMC"), // Folia
++                .orElse("apiarymc"), // Folia
              SharedConstants.getCurrentVersion().getId(),
              SharedConstants.getCurrentVersion().getName(),
              getManifestAttribute(manifest, ATTRIBUTE_BUILD_NUMBER)
