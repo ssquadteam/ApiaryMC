@@ -4,13 +4,13 @@ Date: Wed, 31 Jul 2024 14:37:41 +0400
 Subject: [PATCH] Add-config
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..344a70e3c1274936d218757059c713bf9e75603b
 --- /dev/null
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 @@ -0,0 +1,162 @@
-+package net.edenor.foldenor.config;
++package net.ssquadteam.apiary.config;
 +
 +import com.google.common.base.Throwables;
 +import com.google.common.collect.ImmutableMap;
@@ -27,8 +27,8 @@ index 0000000000000000000000000000000000000000..344a70e3c1274936d218757059c713bf
 +import java.util.List;
 +import java.util.Map;
 +import java.util.logging.Level;
-+public class FoldenorConfig {
-+    protected static final String HEADER = "This is the main configuration file for Foldenor.";
++public class ApiaryConfig {
++    protected static final String HEADER = "This is the main configuration file for Apiary.";
 +    protected static File CONFIG_FILE;
 +    public static YamlConfiguration config;
 +
@@ -50,7 +50,7 @@ index 0000000000000000000000000000000000000000..344a70e3c1274936d218757059c713bf
 +            try {
 +                config.load(CONFIG_FILE);
 +            } catch (InvalidConfigurationException ex){
-+                Bukkit.getLogger().log(Level.SEVERE, "Could not load foldenor.yml, please correct your syntax errors", ex);
++                Bukkit.getLogger().log(Level.SEVERE, "Could not load apiary.yml, please correct your syntax errors", ex);
 +                throw Throwables.propagate(ex);
 +            } catch (IOException ignore) {}
 +        }
@@ -180,7 +180,7 @@ index 301d7fa29fce2997a5881b3852896eff5af33672..a196839396e9a54c449b7dd5f1953a8a
  import java.util.Optional;
  import java.util.function.BooleanSupplier;
  import javax.annotation.Nullable;
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.DefaultUncaughtExceptionHandler;
  import net.minecraft.DefaultUncaughtExceptionHandlerWithName;
  import net.minecraft.SharedConstants;
@@ -189,7 +189,7 @@ index 301d7fa29fce2997a5881b3852896eff5af33672..a196839396e9a54c449b7dd5f1953a8a
          com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now
 +        try {
-+            FoldenorConfig.init((java.io.File) options.valueOf("foldenor-settings"));
++            ApiaryConfig.init((java.io.File) options.valueOf("apiary-settings"));
 +        } catch (Exception e) {
 +            DedicatedServer.LOGGER.error("Unable to load server configuration", e);
 +            return false;
@@ -205,8 +205,8 @@ index c15f13d532a592cd085942f4a3f4f3234bd7fe6b..fc5f7909d85d99b7fdaceb15d2672e36
          return this.asyncScheduler;
      }
  
-+    public YamlConfiguration getFoldenorConfig() {
-+        return net.edenor.foldenor.config.FoldenorConfig.config;
++    public YamlConfiguration getApiaryConfig() {
++        return net.ssquadteam.apiary.config.ApiaryConfig.config;
 +    }
 +
      @Override
@@ -216,7 +216,7 @@ index c15f13d532a592cd085942f4a3f4f3234bd7fe6b..fc5f7909d85d99b7fdaceb15d2672e36
  
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
-+        net.edenor.foldenor.config.FoldenorConfig.init((File) console.options.valueOf("foldenor-settings"));
++        net.ssquadteam.apiary.config.ApiaryConfig.init((File) console.options.valueOf("apiary-settings"));
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
@@ -228,10 +228,10 @@ index 618f4b2e1d012b647b3e7bf359c8ecdd7f159e63..ab575baca2bce12ffa64c9e77a828f0a
                          .describedAs("Jar file");
                  // Paper end
  
-+                acceptsAll(asList("foldenor", "foldenor-settings"), "File for foldenor settings")
++                acceptsAll(asList("apiary", "apiary-settings"), "File for apiary settings")
 +                    .withRequiredArg()
 +                    .ofType(File.class)
-+                    .defaultsTo(new File("foldenor.yml"))
++                    .defaultsTo(new File("apiary.yml"))
 +                    .describedAs("Yml file");
 +
                  // Paper start

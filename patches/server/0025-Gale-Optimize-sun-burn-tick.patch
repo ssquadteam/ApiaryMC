@@ -5,7 +5,7 @@ Subject: [PATCH] Gale-Optimize-sun-burn-tick
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 79ce634f6ef7cf7446f58162c22781479e20af08..93457c36f3b8dabb860472c8336bca57668a408b 100644
+index 4dc116339b73d14f6918a24c6dabef21270924f0..7806ff5ff412b9fd313fd64190fa289eeedf499f 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -316,7 +316,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -39,10 +39,10 @@ index 79ce634f6ef7cf7446f58162c22781479e20af08..93457c36f3b8dabb860472c8336bca57
          this.absMoveTo(x, y, z);
          this.absRotateTo(yaw, pitch);
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index f74e8826700932d5e145f90e57d562c15863f27a..3fad8a4aaa398f0d3a3b5c1977f264eac08676fc 100644
+index 9e6bf0144489a7de7105d81f51bef117cd5aa667..d128696499e014dc6d359460675e21344df5da86 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1772,15 +1772,29 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -1776,15 +1776,29 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
  
      protected void playAttackSound() {}
  

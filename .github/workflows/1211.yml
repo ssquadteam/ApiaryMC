@@ -41,3 +41,12 @@ jobs:
         
       - name: Build ReobfPaperclip
         run: ./gradlew createReobfPaperclipJar
+
+      - name: Automatic Releases
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          title: "ApiaryMC 1.21.1"
+          automatic_release_tag: "latest"
+          files: build/libs/*
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false

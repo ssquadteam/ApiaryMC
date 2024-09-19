@@ -4,11 +4,11 @@ Date: Tue, 6 Aug 2024 16:19:01 +0400
 Subject: [PATCH] Add-chance-config-for-piglin-spawn-in-nether-portal
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index 3252f121394f9dff7025708eb8528809b3abc248..9000c8836bbbe9d9931d6e35d303aed71e8d4e6e 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -41,6 +41,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -41,6 +41,8 @@ public class ApiaryConfig {
  
      public static boolean useAlternateKeepAlive = false;
  
@@ -17,7 +17,7 @@ index 3252f121394f9dff7025708eb8528809b3abc248..9000c8836bbbe9d9931d6e35d303aed7
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -83,6 +85,8 @@ public class FoldenorConfig {
+@@ -83,6 +85,8 @@ public class ApiaryConfig {
      static void readConfig() {
          readNetworkSettings();
  
@@ -26,7 +26,7 @@ index 3252f121394f9dff7025708eb8528809b3abc248..9000c8836bbbe9d9931d6e35d303aed7
          try {
              readDynamicActivationOfBrains();
          } catch (IOException e) {
-@@ -102,6 +106,11 @@ public class FoldenorConfig {
+@@ -102,6 +106,11 @@ public class ApiaryConfig {
          useAlternateKeepAlive = getBoolean("network.use-alternate-keepalive", useAlternateKeepAlive);
      }
  
@@ -47,7 +47,7 @@ index eba62f1336697157da94c7dcde389cc2e929bb0b..918b50e1f17fa2b49e5e7ef48182538e
  import java.util.Optional;
  import javax.annotation.Nullable;
 +
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.BlockUtil;
  import net.minecraft.core.BlockPos;
  import net.minecraft.core.Direction;
@@ -58,7 +58,7 @@ index eba62f1336697157da94c7dcde389cc2e929bb0b..918b50e1f17fa2b49e5e7ef48182538e
 -        if (world.spigotConfig.enableZombiePigmenPortalSpawns && world.dimensionType().natural() && world.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING) && random.nextInt(2000) < world.getDifficulty().getId()) { // Spigot
 +        if (world.spigotConfig.enableZombiePigmenPortalSpawns && world.dimensionType().natural()
 +            && world.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING) && random.nextInt(2000) < world.getDifficulty().getId()
-+            && random.nextInt(100) <= FoldenorConfig.piglinSpawnChancePersentInPortal) { // Spigot // Foldenor
++            && random.nextInt(100) <= ApiaryConfig.piglinSpawnChancePersentInPortal) { // Spigot // Apiary
              while (world.getBlockState(pos).is((Block) this)) {
                  pos = pos.below();
              }

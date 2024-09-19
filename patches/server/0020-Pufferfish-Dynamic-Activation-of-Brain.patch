@@ -4,11 +4,11 @@ Date: Tue, 6 Aug 2024 14:31:43 +0400
 Subject: [PATCH] Pufferfish-Dynamic-Activation-of-Brain
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index c8c6631093ff2ebd23527e80778b35f9c44cc8bf..5b5a2491ec297c87458cf66171f5ed4c1e41e80d 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -2,6 +2,9 @@ package net.edenor.foldenor.config;
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -2,6 +2,9 @@ package net.ssquadteam.apiary.config;
  
  import com.google.common.base.Throwables;
  import com.google.common.collect.ImmutableMap;
@@ -26,7 +26,7 @@ index c8c6631093ff2ebd23527e80778b35f9c44cc8bf..5b5a2491ec297c87458cf66171f5ed4c
  import java.util.List;
  import java.util.Map;
  import java.util.logging.Level;
-@@ -25,6 +29,14 @@ public class FoldenorConfig {
+@@ -25,6 +29,14 @@ public class ApiaryConfig {
  
      public static boolean sendNullEntityPackets = false;
  
@@ -41,7 +41,7 @@ index c8c6631093ff2ebd23527e80778b35f9c44cc8bf..5b5a2491ec297c87458cf66171f5ed4c
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -67,6 +79,12 @@ public class FoldenorConfig {
+@@ -67,6 +79,12 @@ public class ApiaryConfig {
      static void readConfig() {
          readNetworkSettings();
  
@@ -54,7 +54,7 @@ index c8c6631093ff2ebd23527e80778b35f9c44cc8bf..5b5a2491ec297c87458cf66171f5ed4c
          try {
              config.save(CONFIG_FILE);
          } catch (IOException ex) {
-@@ -78,6 +96,30 @@ public class FoldenorConfig {
+@@ -78,6 +96,30 @@ public class ApiaryConfig {
          sendNullEntityPackets = getBoolean("network.send-null-entity-packets", sendNullEntityPackets);
      }
  
@@ -98,7 +98,7 @@ index a3e8f0c12b2b6592ef6c2ace56ca0e053a4bbbff..9a9be6f618c361db39eff0f0397bbc21
                      if (false && this.shouldDiscardEntity(entity)) { // CraftBukkit - We prevent spawning in general, so this butchering is not needed
                          entity.discard();
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index d1164f15c6b9ae221f6cae2bdb7d040cfa3cbccf..f6ad6cb80aefb6c64a0dbb986f4afcc70aa19c1d 100644
+index f860ecc9cb350a127bcdcdc12f9990b78aad12a5..69caa0b66a2025d5d1620f5ff5329cdb73ac2294 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -431,6 +431,8 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -106,7 +106,7 @@ index d1164f15c6b9ae221f6cae2bdb7d040cfa3cbccf..f6ad6cb80aefb6c64a0dbb986f4afcc7
      public boolean freezeLocked = false; // Paper - Freeze Tick Lock API
      public boolean fixedPose = false; // Paper - Expand Pose API
 +    public boolean activatedPriorityReset = false; // Pufferfish - DAB
-+    public int activatedPriority = net.edenor.foldenor.config.FoldenorConfig.maximumActivationPrio; // Pufferfish - DAB (golf score)
++    public int activatedPriority = net.ssquadteam.apiary.config.ApiaryConfig.maximumActivationPrio; // Pufferfish - DAB (golf score)
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
@@ -123,7 +123,7 @@ index c74a01a8551457507441d266b6923b4248560abf..da815f30a44cbfe577b75b79e4527930
      private String descriptionId;
      @Nullable
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 741ba5f0834ab5f0b0ffdeb91a9ff8cfaf922792..f74e8826700932d5e145f90e57d562c15863f27a 100644
+index 1cb0029739a487d930e4f10371c82d3a03a46de4..9e6bf0144489a7de7105d81f51bef117cd5aa667 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -244,10 +244,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -139,7 +139,7 @@ index 741ba5f0834ab5f0b0ffdeb91a9ff8cfaf922792..f74e8826700932d5e145f90e57d562c1
              this.targetSelector.tick();
          }
      }
-@@ -945,16 +945,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -949,16 +949,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
  
          if (i % 2 != 0 && this.tickCount > 1) {
              gameprofilerfiller.push("targetSelector");
@@ -187,7 +187,7 @@ index 9bdbf3e9453bc3ce96d52d04b8cde0d05f7356d8..b581263990fed39efef95a62fd7f10e3
      // Paper start
 -    public boolean inactiveTick() {
 +    public boolean inactiveTick(int tickRate, boolean inactive) { // Pufferfish start
-+        if (inactive && !net.edenor.foldenor.config.FoldenorConfig.dearEnabled) tickRate = 4; // reset to Paper's
++        if (inactive && !net.ssquadteam.apiary.config.ApiaryConfig.dearEnabled) tickRate = 4; // reset to Paper's
 +        tickRate = Math.min(tickRate, 3);
          this.curRate++;
 -        return this.curRate % 3 == 0; // TODO newGoalRate was already unused in 1.20.4, check if this is correct
@@ -378,17 +378,17 @@ index 28f376f6ab219b3327f074c95b87b923270504f6..24b45224b6a9e3b86ddba550e720b62b
                  ActivationRange.activateEntity(entity, bbByType); // Folia - threaded regions
 +
 +                // Pufferfish start
-+                if (net.edenor.foldenor.config.FoldenorConfig.dearEnabled && entity.getType().dabEnabled) {
++                if (net.ssquadteam.apiary.config.ApiaryConfig.dearEnabled && entity.getType().dabEnabled) {
 +                    if (!entity.activatedPriorityReset) {
 +                        entity.activatedPriorityReset = true;
-+                        entity.activatedPriority = net.edenor.foldenor.config.FoldenorConfig.maximumActivationPrio;
++                        entity.activatedPriority = net.ssquadteam.apiary.config.ApiaryConfig.maximumActivationPrio;
 +                    }
 +                    Vec3 playerVec = player.position();
 +                    Vec3 entityVec = entity.position();
 +                    double diffX = playerVec.x - entityVec.x, diffY = playerVec.y - entityVec.y, diffZ = playerVec.z - entityVec.z;
 +                    int squaredDistance = (int) (diffX * diffX + diffY * diffY + diffZ * diffZ);
-+                    entity.activatedPriority = squaredDistance > net.edenor.foldenor.config.FoldenorConfig.startDistanceSquared ?
-+                        Math.max(1, Math.min(squaredDistance >> net.edenor.foldenor.config.FoldenorConfig.activationDistanceMod, entity.activatedPriority)) :
++                    entity.activatedPriority = squaredDistance > net.ssquadteam.apiary.config.ApiaryConfig.startDistanceSquared ?
++                        Math.max(1, Math.min(squaredDistance >> net.ssquadteam.apiary.config.ApiaryConfig.activationDistanceMod, entity.activatedPriority)) :
 +                        1;
 +                } else {
 +                    entity.activatedPriority = 1;

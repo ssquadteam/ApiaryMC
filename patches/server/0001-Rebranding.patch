@@ -13,7 +13,7 @@ index f0a90d13a17160cd363d54d494add4f6433b4758..0a9bcd472022cd7ea57110dd24928d5b
 
  dependencies {
 -    implementation(project(":folia-api")) // Folia
-+    implementation(project(":foldenor-api")) // Folia
++    implementation(project(":apiary-api")) // Folia
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
@@ -54,7 +54,7 @@ index cb60d58d4a7556dd896f31d0cd249f860bb3ef84..04403a5dadc5a4d2d5503a57c49011cb
                      paperVersion = "unknown";
                  }
 -                metrics.addCustomChart(new Metrics.SimplePie("folia_version", () -> paperVersion)); // Folia - we have our own bstats page
-+                metrics.addCustomChart(new Metrics.SimplePie("foldenor_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown"));
++                metrics.addCustomChart(new Metrics.SimplePie("apiary_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown"));
 
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
@@ -134,7 +134,7 @@ index e9b6ca3aa25e140467ae866d572483050ea3fa0e..85c419af128d3b08e7f81c07a33b6474
          String result = "Unknown-Version";
 
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.folia/folia-api/pom.properties"); // Folia
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.edenor.foldenor/foldenor-api/pom.properties"); // Folia
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.ssquadteam.apiary/apiary-api/pom.properties"); // Folia
          Properties properties = new Properties();
 
          if (stream != null) {

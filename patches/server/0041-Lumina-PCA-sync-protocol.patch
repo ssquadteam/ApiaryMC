@@ -5,10 +5,10 @@ Subject: [PATCH] Lumina PCA-sync-protocol
 
 
 diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-index 49c5684edf5f605ba862599b0afcb48d8d0bebaa..e3ef04b52ed1c0dfb9e40cc2daedc0659f761fb7 100644
+index 448c311508b57978a76713da538580cf4beba9dc..197954520907e99b7523b3543612bad751d9e969 100644
 --- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
 +++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -109,6 +109,8 @@ public class FoldenorConfig {
+@@ -110,6 +110,8 @@ public class FoldenorConfig {
  
          projectileTimeouts();
  
@@ -17,7 +17,7 @@ index 49c5684edf5f605ba862599b0afcb48d8d0bebaa..e3ef04b52ed1c0dfb9e40cc2daedc065
          try {
              readDynamicActivationOfBrains();
          } catch (IOException e) {
-@@ -198,6 +200,21 @@ public class FoldenorConfig {
+@@ -205,6 +207,21 @@ public class FoldenorConfig {
          }
      }
  
@@ -271,7 +271,7 @@ index 431fb6a658c6aac43b6f9dbd1f578b83f261a4e3..75df0fc2eb581b36713001f1f43912ff
      protected Component getDefaultName() {
          return Component.translatable("container.dispenser");
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 09410e95ebb0fd0089c924f39914287465a453bd..6088e4abdb353328d06852b71089c358abd1398e 100644
+index 1035a68aaeb9c50752a03cd72fe65c5eb7e8746c..1aab9e49b8046f926f7c6e0d7d535f2382d711fa 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -144,6 +144,16 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen

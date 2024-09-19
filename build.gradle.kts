@@ -30,24 +30,6 @@ allprojects {
             languageVersion.set(JavaLanguageVersion.of(21))
         }
     }
-
-    /*publishing {
-        repositories {
-            maven {
-                name = "githubPackage"
-                url = uri("https://maven.pkg.github.com/Edenor-Minecraft/Foldenor")
-
-                credentials {
-                    username = System.getenv("GITHUB_USERNAME")
-                    password = System.getenv("GITHUB_TOKEN")
-                }
-            }
-
-            publications.register<MavenPublication>("gpr") {
-                from(components["java"])
-            }
-        }
-    }*/
 }
 
 subprojects {
@@ -69,13 +51,13 @@ subprojects {
 }
 
 paperweight {
-    serverProject.set(project(":foldenor-server"))
+    serverProject.set(project(":apiary-server"))
 
     remapRepo.set(paperMavenPublicUrl)
     decompileRepo.set(paperMavenPublicUrl)
 
     useStandardUpstream("Folia") {
-        url.set(github("Edenor-Minecraft", "Folia"))
+        url.set(github("PaperMC", "Folia"))
         ref.set(providers.gradleProperty("foliaRef"))
 
         withStandardPatcher {
@@ -83,10 +65,10 @@ paperweight {
             serverSourceDirPath.set("folia-server")
 
             apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
-            apiOutputDir.set(layout.projectDirectory.dir("Foldenor-api"))
+            apiOutputDir.set(layout.projectDirectory.dir("Apiary-api"))
 
             serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
-            serverOutputDir.set(layout.projectDirectory.dir("Foldenor-server"))
+            serverOutputDir.set(layout.projectDirectory.dir("Apiary-server"))
         }
 
         patchTasks.register("generatedApi") {

@@ -1,16 +1,16 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: AltronMaxX <max06112004@gmail.com>
 Date: Wed, 31 Jul 2024 14:55:42 +0400
-Subject: [PATCH] Add-Foldenor-commands
+Subject: [PATCH] Add-Apiary-commands
 
 
-diff --git a/src/main/java/net/edenor/foldenor/commands/FoldenorCommand.java b/src/main/java/net/edenor/foldenor/commands/FoldenorCommand.java
+diff --git a/src/main/java/net/ssquadteam/apiary/commands/ApiaryCommand.java b/src/main/java/net/ssquadteam/apiary/commands/ApiaryCommand.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..a4bbdbb119c9e9c15265cd06831ee7a0c1f54622
 --- /dev/null
-+++ b/src/main/java/net/edenor/foldenor/commands/FoldenorCommand.java
++++ b/src/main/java/net/ssquadteam/apiary/commands/ApiaryCommand.java
 @@ -0,0 +1,66 @@
-+package net.edenor.foldenor.commands;
++package net.ssquadteam.apiary.commands;
 +
 +import java.io.File;
 +import java.util.Collections;
@@ -18,7 +18,7 @@ index 0000000000000000000000000000000000000000..a4bbdbb119c9e9c15265cd06831ee7a0
 +import java.util.stream.Collectors;
 +import java.util.stream.Stream;
 +
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
 +import net.kyori.adventure.text.Component;
 +import net.kyori.adventure.text.format.TextColor;
 +import net.kyori.adventure.text.format.TextDecoration;
@@ -29,13 +29,13 @@ index 0000000000000000000000000000000000000000..a4bbdbb119c9e9c15265cd06831ee7a0
 +import org.bukkit.command.CommandSender;
 +import org.jetbrains.annotations.NotNull;
 +
-+public class FoldenorCommand extends Command {
++public class ApiaryCommand extends Command {
 +
 +    public static void init() {
-+        MinecraftServer.getServer().server.getCommandMap().register("apiary", "Apiary", new FoldenorCommand());
++        MinecraftServer.getServer().server.getCommandMap().register("apiary", "Apiary", new ApiaryCommand());
 +    }
 +
-+    protected FoldenorCommand() {
++    protected ApiaryCommand() {
 +        super("apiary");
 +        this.description = "Apiary related commands";
 +        this.usageMessage = "/apiary [reload | version]";
@@ -64,7 +64,7 @@ index 0000000000000000000000000000000000000000..a4bbdbb119c9e9c15265cd06831ee7a0
 +
 +        if (args[0].equalsIgnoreCase("reload")) {
 +            MinecraftServer console = MinecraftServer.getServer();
-+            FoldenorConfig.init(new File("foldenor.yml"));
++            ApiaryConfig.init(new File("apiary.yml"));
 +            console.server.reloadCount++;
 +
 +            Command.broadcastCommandMessage(sender, prefix.append(Component.text("Apiary configuration has been reloaded.").color(TextColor.fromHexString("#e8f9f9"))));
@@ -84,7 +84,7 @@ index a196839396e9a54c449b7dd5f1953a8a16657ba4..6a140fa920002798f7e88f699416ae04
              DedicatedServer.LOGGER.error("Unable to load server configuration", e);
              return false;
          }
-+        net.edenor.foldenor.commands.FoldenorCommand.init(); // Foldenor
++        net.ssquadteam.apiary.commands.ApiaryCommand.init(); // Apiary
 
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);

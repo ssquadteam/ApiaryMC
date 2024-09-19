@@ -4,13 +4,13 @@ Date: Wed, 31 Jul 2024 14:21:14 +0400
 Subject: [PATCH] Feature-secure-seed
 
 
-diff --git a/src/main/java/net/edenor/foldenor/secureseed/Globals.java b/src/main/java/net/edenor/foldenor/secureseed/Globals.java
+diff --git a/src/main/java/net/ssquadteam/apiary/secureseed/Globals.java b/src/main/java/net/ssquadteam/apiary/secureseed/Globals.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..0530a8a2b31faf64a905515d7f1a2bdbf04f0996
 --- /dev/null
-+++ b/src/main/java/net/edenor/foldenor/secureseed/Globals.java
++++ b/src/main/java/net/ssquadteam/apiary/secureseed/Globals.java
 @@ -0,0 +1,87 @@
-+package net.edenor.foldenor.secureseed;
++package net.ssquadteam.apiary.secureseed;
 +
 +import com.google.common.collect.Iterables;
 +import net.minecraft.server.level.ServerLevel;
@@ -97,13 +97,13 @@ index 0000000000000000000000000000000000000000..0530a8a2b31faf64a905515d7f1a2bdb
 +        return seedBigInt.toString();
 +    }
 +}
-diff --git a/src/main/java/net/edenor/foldenor/secureseed/Hashing.java b/src/main/java/net/edenor/foldenor/secureseed/Hashing.java
+diff --git a/src/main/java/net/ssquadteam/apiary/secureseed/Hashing.java b/src/main/java/net/ssquadteam/apiary/secureseed/Hashing.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..77d09c878458709e37fc692844daa2ec642eb771
 --- /dev/null
-+++ b/src/main/java/net/edenor/foldenor/secureseed/Hashing.java
++++ b/src/main/java/net/ssquadteam/apiary/secureseed/Hashing.java
 @@ -0,0 +1,71 @@
-+package net.edenor.foldenor.secureseed;
++package net.ssquadteam.apiary.secureseed;
 +
 +public class Hashing {
 +    private final static long[] blake2b_IV = {
@@ -174,13 +174,13 @@ index 0000000000000000000000000000000000000000..77d09c878458709e37fc692844daa2ec
 +                internalState[posB] = Long.rotateRight(internalState[posB] ^ internalState[posC], 63); // replaces 11 of BLAKE
 +            }
 +}
-diff --git a/src/main/java/net/edenor/foldenor/secureseed/WorldgenCryptoRandom.java b/src/main/java/net/edenor/foldenor/secureseed/WorldgenCryptoRandom.java
+diff --git a/src/main/java/net/ssquadteam/apiary/secureseed/WorldgenCryptoRandom.java b/src/main/java/net/ssquadteam/apiary/secureseed/WorldgenCryptoRandom.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..d02b5b487e6b91340a820a06a459273636c86d40
 --- /dev/null
-+++ b/src/main/java/net/edenor/foldenor/secureseed/WorldgenCryptoRandom.java
++++ b/src/main/java/net/ssquadteam/apiary/secureseed/WorldgenCryptoRandom.java
 @@ -0,0 +1,159 @@
-+package net.edenor.foldenor.secureseed;
++package net.ssquadteam.apiary.secureseed;
 +
 +import net.minecraft.util.Mth;
 +import net.minecraft.util.RandomSource;
@@ -354,7 +354,7 @@ index 0b500b19a99fa6c2740c0db350a166462668df9c..6ccc18be6c264e273c06df681a55311f
  import net.minecraft.network.chat.Component;
  import net.minecraft.network.chat.ComponentUtils;
 +import net.minecraft.network.chat.HoverEvent;
-+import net.edenor.foldenor.secureseed.Globals; //Foldenor - feature secure seed
++import net.ssquadteam.apiary.secureseed.Globals; //Apiary - feature secure seed
  
  public class SeedCommand {
      public static void register(CommandDispatcher<CommandSourceStack> dispatcher, boolean dedicated) {
@@ -362,10 +362,10 @@ index 0b500b19a99fa6c2740c0db350a166462668df9c..6ccc18be6c264e273c06df681a55311f
              long l = context.getSource().getLevel().getSeed();
 -            Component component = ComponentUtils.copyOnClickText(String.valueOf(l));
 -            context.getSource().sendSuccess(() -> Component.translatable("commands.seed.success", component), false);
-+            //Component component = ComponentUtils.copyOnClickText(String.valueOf(l)); Foldenor - feature secure seed
-+            //context.getSource().sendSuccess(() -> Component.translatable("commands.seed.success", component), false); Foldenor - feature secure seed
++            //Component component = ComponentUtils.copyOnClickText(String.valueOf(l)); Apiary - feature secure seed
++            //context.getSource().sendSuccess(() -> Component.translatable("commands.seed.success", component), false); Apiary - feature secure seed
 +
-+            // Foldenor start - feature secure seed
++            // Apiary start - feature secure seed
 +            Globals.setupGlobals(context.getSource().getLevel());
 +            String seedStr = Globals.seedToString(Globals.worldSeed);
 +
@@ -379,7 +379,7 @@ index 0b500b19a99fa6c2740c0db350a166462668df9c..6ccc18be6c264e273c06df681a55311f
 +
 +            context.getSource().sendSuccess(() -> {return Component.translatable("commands.seed.success", seedComponent);}, false);
 +            context.getSource().sendSuccess(() -> {return Component.translatable("Feature seed: %s", featureSeedComponent);}, false);
-+            // Foldenor end
++            // Apiary end
              return (int)l;
          }));
      }
@@ -391,7 +391,7 @@ index d6431376184e5650b370cbab204e28bc31f4dac6..a462bfa26f2df4a21bed4024bd8ea166
  import net.minecraft.world.level.levelgen.presets.WorldPreset;
  import net.minecraft.world.level.levelgen.presets.WorldPresets;
  import org.slf4j.Logger;
-+import net.edenor.foldenor.secureseed.Globals;
++import net.ssquadteam.apiary.secureseed.Globals;
  
  // CraftBukkit start
  import joptsimple.OptionSet;
@@ -400,7 +400,7 @@ index d6431376184e5650b370cbab204e28bc31f4dac6..a462bfa26f2df4a21bed4024bd8ea166
          long i = WorldOptions.parseSeed(s).orElse(WorldOptions.randomSeed());
  
 -        this.worldOptions = new WorldOptions(i, flag, false);
-+        // Foldenor start - Feature secure seed
++        // Apiary start - Feature secure seed
 +        String featureSeedString = this.get("feature-level-seed", "");
 +        long[] featureSeed;
 +        if (featureSeedString.isEmpty()) {
@@ -410,7 +410,7 @@ index d6431376184e5650b370cbab204e28bc31f4dac6..a462bfa26f2df4a21bed4024bd8ea166
 +        }
 +
 +        this.worldOptions = new WorldOptions(i, featureSeed, flag, false);
-+        // Foldenor end - Feature secure seed
++        // Apiary end - Feature secure seed
          this.worldDimensionData = new DedicatedServerProperties.WorldDimensionData((JsonObject) this.get("generator-settings", (s1) -> {
              return GsonHelper.parse(!s1.isEmpty() ? s1 : "{}");
          }, new JsonObject()), (String) this.get("level-type", (s1) -> {
@@ -422,7 +422,7 @@ index 135fa024d81b962761f0edc6896a2a507b6981f9..8ec743bbb76e402a2a0b92bdafe49d70
      }
  
      public ChunkGenerator getGenerator() {
-+        net.edenor.foldenor.secureseed.Globals.setupGlobals(level);
++        net.ssquadteam.apiary.secureseed.Globals.setupGlobals(level);
          return this.chunkMap.generator();
      }
  
@@ -434,7 +434,7 @@ index 0166d6bd686d68ffdcc42e908b0d1aa41a3bffdf..e1fefb845cd0835be7f7b67dd4ae9475
              chunkgenerator = new org.bukkit.craftbukkit.generator.CustomChunkGenerator(this, chunkgenerator, gen);
          }
          // CraftBukkit end
-+        net.edenor.foldenor.secureseed.Globals.setupGlobals(this);
++        net.ssquadteam.apiary.secureseed.Globals.setupGlobals(this);
          boolean flag2 = minecraftserver.forceSynchronousWrites();
          DataFixer datafixer = minecraftserver.getFixerUpper();
          EntityPersistentStorage<Entity> entitypersistentstorage = new EntityStorage(new SimpleRegionStorage(new RegionStorageInfo(convertable_conversionsession.getLevelId(), resourcekey, "entities"), convertable_conversionsession.getDimensionPath(resourcekey).resolve("entities"), datafixer, flag2, DataFixTypes.ENTITY_CHUNK), this, minecraftserver);
@@ -465,7 +465,7 @@ index 75c8125e20b70433fe9d143a3193d821043327c3..569aa1a353049b9bc8e81b009d791062
 +    public boolean isSlimeChunk() {
 +        if (!hasComputedSlimeChunk) {
 +            hasComputedSlimeChunk = true;
-+            slimeChunk = net.edenor.foldenor.secureseed.WorldgenCryptoRandom.seedSlimeChunk(chunkPos.x, chunkPos.z).nextInt(10) == 0;
++            slimeChunk = net.ssquadteam.apiary.secureseed.WorldgenCryptoRandom.seedSlimeChunk(chunkPos.x, chunkPos.z).nextInt(10) == 0;
 +        }
 +
 +        return slimeChunk;
@@ -482,7 +482,7 @@ index cead18e4f8ea278b999fa0e1aff58580a6604645..1f8ab140c80d81472f591ba4e969dba2
  import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
  import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
  import org.apache.commons.lang3.mutable.MutableBoolean;
-+import net.edenor.foldenor.secureseed.*;
++import net.ssquadteam.apiary.secureseed.*;
  
  public abstract class ChunkGenerator {
  
@@ -515,7 +515,7 @@ index a6b6e5ea191c0e2cd7a2e4f01b89d8af40a83c1b..4d84bf98199e048430cc7560f9002b5e
              int k = placement.spread();
              HolderSet<Biome> holderset = placement.preferredBiomes();
 -            RandomSource randomsource = RandomSource.create();
-+            RandomSource randomsource = new net.edenor.foldenor.secureseed.WorldgenCryptoRandom(0, 0, net.edenor.foldenor.secureseed.Globals.Salt.STRONGHOLDS, 0);
++            RandomSource randomsource = new net.ssquadteam.apiary.secureseed.WorldgenCryptoRandom(0, 0, net.ssquadteam.apiary.secureseed.Globals.Salt.STRONGHOLDS, 0);
  
              // Paper start - Add missing structure set seed configs
              if (this.conf.strongholdSeed != null && structureSetEntry.is(net.minecraft.world.level.levelgen.structure.BuiltinStructureSets.STRONGHOLDS)) {
@@ -527,7 +527,7 @@ index 4e56398a6fb8b97199f4c74ebebc1055fb718dcf..54ac21a4f0be75032ae210d2b22fe63a
      }
  
      public CompletableFuture<ChunkAccess> apply(WorldGenContext context, StaticCache2D<GenerationChunkHolder> staticCache2D, ChunkAccess chunk) {
-+        net.edenor.foldenor.secureseed.Globals.setupGlobals(context.level());
++        net.ssquadteam.apiary.secureseed.Globals.setupGlobals(context.level());
          if (chunk.getPersistedStatus().isBefore(this.targetStatus)) {
              ProfiledDuration profiledDuration = JvmProfiler.INSTANCE.onChunkGenerate(chunk.getPos(), context.level().dimension(), this.targetStatus.getName());
              return this.task.doWork(context, this, staticCache2D, chunk).thenApply(generated -> this.completeChunkGeneration(generated, profiledDuration));
@@ -543,7 +543,7 @@ index 5ae04ec610a885e2ed73e942879a27fe8640471c..5a04ba253f1fd6327ef21ec2b70cfe0c
 +
  import net.minecraft.util.RandomSource;
  import org.apache.commons.lang3.StringUtils;
-+import net.edenor.foldenor.secureseed.Globals;
++import net.ssquadteam.apiary.secureseed.Globals;
  
  public class WorldOptions {
      public static final MapCodec<WorldOptions> CODEC = RecordCodecBuilder.mapCodec(
@@ -630,7 +630,7 @@ index 17d2bb3f7d158ec1230a1ad7c52b9feeda586630..f9b38654f223b14392c429d26c2cc2c0
          List<Pair<BlockPos, Integer>> list = Lists.newLinkedList();
          int k = geodeConfiguration.distributionPoints.sample(randomSource);
 -        WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(worldGenLevel.getSeed()));
-+        WorldgenRandom worldgenRandom = new net.edenor.foldenor.secureseed.WorldgenCryptoRandom(0, 0, net.edenor.foldenor.secureseed.Globals.Salt.GEODE_FEATURE, 0);
++        WorldgenRandom worldgenRandom = new net.ssquadteam.apiary.secureseed.WorldgenCryptoRandom(0, 0, net.ssquadteam.apiary.secureseed.Globals.Salt.GEODE_FEATURE, 0);
          NormalNoise normalNoise = NormalNoise.create(worldgenRandom, -4, 1.0);
          List<BlockPos> list2 = Lists.newLinkedList();
          double d = (double)k / (double)geodeConfiguration.outerWallDistance.getMaxValue();
@@ -645,8 +645,8 @@ index 3fbd6e8d23f2e6020532530ef8ad7e64b8047d4b..7e0adc0261001960b56105b7cb5dcf7b
 -            WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(0L));
 -            worldgenRandom.setLargeFeatureSeed(seed, chunkPos.x, chunkPos.z);
 -            return worldgenRandom;
-+            return new net.edenor.foldenor.secureseed.WorldgenCryptoRandom(
-+                chunkPos.x, chunkPos.z, net.edenor.foldenor.secureseed.Globals.Salt.GENERATE_FEATURE, seed
++            return new net.ssquadteam.apiary.secureseed.WorldgenCryptoRandom(
++                chunkPos.x, chunkPos.z, net.ssquadteam.apiary.secureseed.Globals.Salt.GENERATE_FEATURE, seed
 +            );
          }
      }
@@ -661,8 +661,8 @@ index f873a0a0734b4fe74ba5b5f8ae0cc3c78fa76b9f..77aab9a1a10be0cfad1a3111dd4f935d
          int j = Math.floorDiv(chunkZ, this.spacing);
 -        WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(0L));
 -        worldgenRandom.setLargeFeatureWithSalt(seed, i, j, this.salt());
-+        WorldgenRandom worldgenRandom = new net.edenor.foldenor.secureseed.WorldgenCryptoRandom(
-+            i, j, net.edenor.foldenor.secureseed.Globals.Salt.POTENTIONAL_FEATURE, this.salt
++        WorldgenRandom worldgenRandom = new net.ssquadteam.apiary.secureseed.WorldgenCryptoRandom(
++            i, j, net.ssquadteam.apiary.secureseed.Globals.Salt.POTENTIONAL_FEATURE, this.salt
 +        );
          int k = this.spacing - this.separation;
          int l = this.spreadType.evaluate(worldgenRandom, k);
@@ -675,8 +675,8 @@ index cbf13e4f2da6a27619e9bc9a7cd73bb6e69cad2a..aaff08cb5fab9aca1ef2700fa295210d
  import net.minecraft.world.level.levelgen.LegacyRandomSource;
  import net.minecraft.world.level.levelgen.WorldgenRandom;
  import net.minecraft.world.level.levelgen.structure.StructureSet;
-+import net.edenor.foldenor.secureseed.Globals;
-+import net.edenor.foldenor.secureseed.WorldgenCryptoRandom;
++import net.ssquadteam.apiary.secureseed.Globals;
++import net.ssquadteam.apiary.secureseed.WorldgenCryptoRandom;
  
  public abstract class StructurePlacement {
      public static final Codec<StructurePlacement> CODEC = BuiltInRegistries.STRUCTURE_PLACEMENT
@@ -749,7 +749,7 @@ index 60b10a6e1fcc06430c5cacd4c49d92e1de6e4778..c15f13d532a592cd085942f4a3f4f323
          } else {
              LevelSettings worldsettings;
 -            WorldOptions worldoptions = new WorldOptions(creator.seed(), creator.generateStructures(), false);
-+            WorldOptions worldoptions = new WorldOptions(creator.seed(), net.edenor.foldenor.secureseed.Globals.createRandomWorldSeed(), creator.generateStructures(), false);
++            WorldOptions worldoptions = new WorldOptions(creator.seed(), net.ssquadteam.apiary.secureseed.Globals.createRandomWorldSeed(), creator.generateStructures(), false);
              WorldDimensions worlddimensions;
  
              DedicatedServerProperties.WorldDimensionData properties = new DedicatedServerProperties.WorldDimensionData(GsonHelper.parse((creator.generatorSettings().isEmpty()) ? "{}" : creator.generatorSettings()), creator.type().name().toLowerCase(Locale.ROOT));

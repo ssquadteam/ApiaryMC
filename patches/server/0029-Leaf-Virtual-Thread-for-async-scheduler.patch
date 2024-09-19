@@ -4,11 +4,11 @@ Date: Tue, 6 Aug 2024 19:06:17 +0400
 Subject: [PATCH] Leaf-Virtual-Thread-for-async-scheduler
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index 9000c8836bbbe9d9931d6e35d303aed71e8d4e6e..dd3d35a8870022d6f260020377c97e0be6970481 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -43,6 +43,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -43,6 +43,8 @@ public class ApiaryConfig {
  
      public static int piglinSpawnChancePersentInPortal = 100;
  
@@ -17,7 +17,7 @@ index 9000c8836bbbe9d9931d6e35d303aed71e8d4e6e..dd3d35a8870022d6f260020377c97e0b
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -87,6 +89,8 @@ public class FoldenorConfig {
+@@ -87,6 +89,8 @@ public class ApiaryConfig {
  
          readOptimizationSettings();
  
@@ -26,7 +26,7 @@ index 9000c8836bbbe9d9931d6e35d303aed71e8d4e6e..dd3d35a8870022d6f260020377c97e0b
          try {
              readDynamicActivationOfBrains();
          } catch (IOException e) {
-@@ -111,6 +115,11 @@ public class FoldenorConfig {
+@@ -111,6 +115,11 @@ public class ApiaryConfig {
              "Reduces piglin spawn in portal, by reducing change to spawn");
      }
  
@@ -46,7 +46,7 @@ index 3c1992e212a6d6f1db4d5b807b38d71913619fc0..3a9d20bda722447247475a8d6aa8b642
  
  import com.destroystokyo.paper.ServerSchedulerReportingWrapper;
  import com.google.common.util.concurrent.ThreadFactoryBuilder;
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import org.bukkit.plugin.Plugin;
  
  import java.util.ArrayList;
@@ -68,7 +68,7 @@ index 3c1992e212a6d6f1db4d5b807b38d71913619fc0..3a9d20bda722447247475a8d6aa8b642
 -        executor.allowCoreThreadTimeOut(true);
 -        executor.prestartAllCoreThreads();
 +        // Leaf start - Ability to use Virtual Thread for async scheduler
-+        if (FoldenorConfig.useVirtualThreadForAsyncScheduler) {
++        if (ApiaryConfig.useVirtualThreadForAsyncScheduler) {
 +            executor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("Craft Scheduler Thread - ", 0).factory());
 +            return;
 +        }

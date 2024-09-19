@@ -4,11 +4,11 @@ Date: Tue, 6 Aug 2024 15:08:16 +0400
 Subject: [PATCH] Leaves-Appleskin-Protocol
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index 5b5a2491ec297c87458cf66171f5ed4c1e41e80d..36cf79632b12c67291ccccfda7341ee543e607c6 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -37,6 +37,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -37,6 +37,8 @@ public class ApiaryConfig {
      public static int activationDistanceMod;
      // Pufferfish DAB
  
@@ -17,7 +17,7 @@ index 5b5a2491ec297c87458cf66171f5ed4c1e41e80d..36cf79632b12c67291ccccfda7341ee5
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -94,6 +96,7 @@ public class FoldenorConfig {
+@@ -94,6 +96,7 @@ public class ApiaryConfig {
  
      protected static void readNetworkSettings(){
          sendNullEntityPackets = getBoolean("network.send-null-entity-packets", sendNullEntityPackets);
@@ -71,14 +71,14 @@ index 0000000000000000000000000000000000000000..a8694777f0619584c76c9cba47f79264
 +
 +    @ProtocolHandler.PlayerJoin
 +    public static void onPlayerLoggedIn(@NotNull ServerPlayer player) {
-+        if (net.edenor.foldenor.config.FoldenorConfig.appleskinProtocol) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.appleskinProtocol) {
 +            resetPlayerData(player);
 +        }
 +    }
 +
 +    @ProtocolHandler.PlayerLeave
 +    public static void onPlayerLoggedOut(@NotNull ServerPlayer player) {
-+        if (net.edenor.foldenor.config.FoldenorConfig.appleskinProtocol) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.appleskinProtocol) {
 +            players.remove(player);
 +            resetPlayerData(player);
 +        }
@@ -86,14 +86,14 @@ index 0000000000000000000000000000000000000000..a8694777f0619584c76c9cba47f79264
 +
 +    @ProtocolHandler.MinecraftRegister(ignoreId = true)
 +    public static void onPlayerSubscribed(@NotNull ServerPlayer player) {
-+        if (net.edenor.foldenor.config.FoldenorConfig.appleskinProtocol) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.appleskinProtocol) {
 +            players.add(player);
 +        }
 +    }
 +
 +    @ProtocolHandler.Ticker
 +    public static void tick() {
-+        if (net.edenor.foldenor.config.FoldenorConfig.appleskinProtocol) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.appleskinProtocol) {
 +            for (ServerPlayer player : players) {
 +                FoodData data = player.getFoodData();
 +
@@ -120,7 +120,7 @@ index 0000000000000000000000000000000000000000..a8694777f0619584c76c9cba47f79264
 +
 +    @ProtocolHandler.ReloadServer
 +    public static void onServerReload() {
-+        if (!net.edenor.foldenor.config.FoldenorConfig.appleskinProtocol) {
++        if (!net.ssquadteam.apiary.config.ApiaryConfig.appleskinProtocol) {
 +            disableAllPlayer();
 +        }
 +    }

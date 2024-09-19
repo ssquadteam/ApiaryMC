@@ -63,7 +63,7 @@ index 3218cbf84f54daf06e84442d5eb1a36d8da6b215..ec9b27177dc526510e86d85f48f167b4
              synchronized (cache) {
                  regionFile = ((ChunkSystemRegionFileStorage)(Object)cache).moonrise$getRegionFileIfLoaded(chunkX, chunkZ);
 diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..d4f616a4580e2fc29f9f34b7bbcbf27eecaa27ab 100644
+index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675366b8a10 100644
 --- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
 +++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
 @@ -2,6 +2,7 @@ package net.edenor.foldenor.config;
@@ -96,7 +96,7 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..d4f616a4580e2fc29f9f34b7bbcbf27e
  
      public static int version;
      static boolean verbose;
-@@ -47,6 +52,12 @@ public class FoldenorConfig {
+@@ -47,6 +52,13 @@ public class FoldenorConfig {
  
      public static boolean skipMapItemUpdatesIfNoBukkitRender = true;
  
@@ -105,11 +105,12 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..d4f616a4580e2fc29f9f34b7bbcbf27e
 +    public static boolean throwOnUnknownExtension = false;
 +    public static int linearFlushFrequency = 5;
 +    public static EnumRegionFileExtension regionFormatType;
++    public static int linearFlushThreads = 1;
 +
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -93,6 +104,8 @@ public class FoldenorConfig {
+@@ -93,6 +105,8 @@ public class FoldenorConfig {
  
          readMiscSettings();
  
@@ -118,7 +119,7 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..d4f616a4580e2fc29f9f34b7bbcbf27e
          try {
              readDynamicActivationOfBrains();
          } catch (IOException e) {
-@@ -123,6 +136,25 @@ public class FoldenorConfig {
+@@ -123,6 +137,31 @@ public class FoldenorConfig {
              "Use the new Virtual Thread introduced in JDK 21 for CraftAsyncScheduler.");
      }
  
@@ -127,6 +128,12 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..d4f616a4580e2fc29f9f34b7bbcbf27e
 +        throwOnUnknownExtension = getBoolean("region-format.throw-on-unknown-extension", throwOnUnknownExtension);
 +        linearCompressionLevel = getInt("region-format.linear.compression-level", linearCompressionLevel);
 +        linearFlushFrequency = getInt("region-format.linear.flush-frequency", linearFlushFrequency);
++        linearFlushThreads = getInt("region-format.linear.flush-max-threads", linearFlushThreads);
++
++        if (linearFlushThreads < 0)
++            linearFlushThreads = Math.max(Runtime.getRuntime().availableProcessors() + linearFlushThreads, 1);
++        else
++            linearFlushThreads = Math.max(linearFlushThreads, 1);
 +
 +        regionFormatType = EnumRegionFileExtension.fromName(regionFormatTypeName);
 +        if (regionFormatType == EnumRegionFileExtension.UNKNOWN) {
@@ -569,10 +576,10 @@ index 0000000000000000000000000000000000000000..087734ea2186c6ee14069b27b09067ce
 +}
 diff --git a/src/main/java/org/stupidcraft/linearpaper/region/LinearRegionFile.java b/src/main/java/org/stupidcraft/linearpaper/region/LinearRegionFile.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f70fe4d99c
+index 0000000000000000000000000000000000000000..947eebd163d2679a8572f7d91966ccaa0af12dfd
 --- /dev/null
 +++ b/src/main/java/org/stupidcraft/linearpaper/region/LinearRegionFile.java
-@@ -0,0 +1,310 @@
+@@ -0,0 +1,306 @@
 +package org.stupidcraft.linearpaper.region;
 +
 +import com.github.luben.zstd.ZstdInputStream;
@@ -596,7 +603,7 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +import java.util.ArrayList;
 +import java.util.Arrays;
 +import java.util.List;
-+import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicBoolean;
 +import javax.annotation.Nullable;
 +
 +import net.jpountz.lz4.LZ4Compressor;
@@ -607,21 +614,24 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +import org.slf4j.Logger;
 +
 +public class LinearRegionFile implements IRegionFile, AutoCloseable {
++
 +    private static final long SUPERBLOCK = -4323716122432332390L;
 +    private static final byte VERSION = 2;
 +    private static final int HEADER_SIZE = 32;
 +    private static final int FOOTER_SIZE = 8;
 +    private static final Logger LOGGER = LogUtils.getLogger();
 +    private static final List<Byte> SUPPORTED_VERSIONS = Arrays.asList((byte) 1, (byte) 2);
++    private static final LinearRegionFileFlusher linearRegionFileFlusher = new LinearRegionFileFlusher();
 +    private final byte[][] buffer = new byte[1024][];
 +    private final int[] bufferUncompressedSize = new int[1024];
 +    private final int[] chunkTimestamps = new int[1024];
 +    private final LZ4Compressor compressor;
 +    private final LZ4FastDecompressor decompressor;
 +    private final int compressionLevel;
++    private final AtomicBoolean markedToSave = new AtomicBoolean(false);
 +    public boolean closed = false;
 +    public Path path;
-+    private volatile long lastFlushed = System.nanoTime();
++
 +
 +    public LinearRegionFile(Path file, int compression) throws IOException {
 +        this.path = file;
@@ -699,8 +709,21 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +        return (int) (System.currentTimeMillis() / 1000L);
 +    }
 +
++    public Path getPath() {
++        return this.path;
++    }
++
 +    public void flush() throws IOException {
-+        flushWrapper(); // sync
++        if (isMarkedToSave()) flushWrapper(); // sync
++    }
++
++    private void markToSave() {
++        linearRegionFileFlusher.scheduleSave(this);
++        markedToSave.set(true);
++    }
++
++    public boolean isMarkedToSave() {
++        return markedToSave.getAndSet(false);
 +    }
 +
 +    public void flushWrapper() {
@@ -711,8 +734,8 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +        }
 +    }
 +
-+    public boolean doesChunkExist(ChunkPos pos) throws Exception {
-+        throw new Exception("doesChunkExist is a stub");
++    public boolean doesChunkExist(ChunkPos pos) {
++        return false;
 +    }
 +
 +    private synchronized void save() throws IOException {
@@ -767,13 +790,6 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +            fileStream.getChannel().force(true); // Ensure atomicity on Btrfs
 +        }
 +        Files.move(tempFile.toPath(), this.path, StandardCopyOption.REPLACE_EXISTING);
-+        this.lastFlushed = System.nanoTime();
-+    }
-+
-+    private void checkAndSave() {
-+        if ((System.nanoTime() - this.lastFlushed) >= TimeUnit.NANOSECONDS.toSeconds(net.edenor.foldenor.config.FoldenorConfig.linearFlushFrequency)) {
-+            this.flushWrapper();
-+        }
 +    }
 +
 +    public synchronized void write(ChunkPos pos, ByteBuffer buffer) {
@@ -794,16 +810,11 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +        } catch (IOException e) {
 +            LOGGER.error("Chunk write IOException {} {}", e, this.path);
 +        }
-+
-+        this.checkAndSave();
++        markToSave();
 +    }
 +
 +    public DataOutputStream getChunkDataOutputStream(ChunkPos pos) {
-+        try {
-+            return new DataOutputStream(new BufferedOutputStream(new ChunkBuffer(pos)));
-+        } finally {
-+            this.checkAndSave();
-+        }
++        return new DataOutputStream(new BufferedOutputStream(new ChunkBuffer(pos)));
 +    }
 +
 +    private byte[] toByteArray(InputStream in) throws IOException {
@@ -820,14 +831,10 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +
 +    @Nullable
 +    public synchronized DataInputStream getChunkDataInputStream(ChunkPos pos) {
-+        try {
-+            if (this.bufferUncompressedSize[getChunkIndex(pos.x, pos.z)] != 0) {
-+                byte[] content = new byte[bufferUncompressedSize[getChunkIndex(pos.x, pos.z)]];
-+                this.decompressor.decompress(this.buffer[getChunkIndex(pos.x, pos.z)], 0, content, 0, bufferUncompressedSize[getChunkIndex(pos.x, pos.z)]);
-+                return new DataInputStream(new ByteArrayInputStream(content));
-+            }
-+        } finally {
-+            this.checkAndSave();
++        if (this.bufferUncompressedSize[getChunkIndex(pos.x, pos.z)] != 0) {
++            byte[] content = new byte[bufferUncompressedSize[getChunkIndex(pos.x, pos.z)]];
++            this.decompressor.decompress(this.buffer[getChunkIndex(pos.x, pos.z)], 0, content, 0, bufferUncompressedSize[getChunkIndex(pos.x, pos.z)]);
++            return new DataInputStream(new ByteArrayInputStream(content));
 +        }
 +        return null;
 +    }
@@ -837,11 +844,7 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +        this.buffer[i] = null;
 +        this.bufferUncompressedSize[i] = 0;
 +        this.chunkTimestamps[i] = getTimestamp();
-+        this.flushWrapper();
-+    }
-+
-+    public Path getPath() {
-+        return this.path;
++        markToSave();
 +    }
 +
 +    public boolean hasChunk(ChunkPos pos) {
@@ -881,5 +884,61 @@ index 0000000000000000000000000000000000000000..b172452cd6664a28cdb38b535018f2f7
 +            ByteBuffer bytebuffer = ByteBuffer.wrap(this.buf, 0, this.count);
 +            LinearRegionFile.this.write(this.pos, bytebuffer);
 +        }
++    }
++}
+diff --git a/src/main/java/org/stupidcraft/linearpaper/region/LinearRegionFileFlusher.java b/src/main/java/org/stupidcraft/linearpaper/region/LinearRegionFileFlusher.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..b7431e26c27a3af641e0889cbd370e622eba258a
+--- /dev/null
++++ b/src/main/java/org/stupidcraft/linearpaper/region/LinearRegionFileFlusher.java
+@@ -0,0 +1,50 @@
++package org.stupidcraft.linearpaper.region;
++
++import com.google.common.util.concurrent.ThreadFactoryBuilder;
++import net.edenor.foldenor.config.FoldenorConfig;
++import org.bukkit.Bukkit;
++
++import java.util.Queue;
++import java.util.concurrent.ExecutorService;
++import java.util.concurrent.Executors;
++import java.util.concurrent.ScheduledExecutorService;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.LinkedBlockingQueue;
++
++public class LinearRegionFileFlusher {
++    private final Queue<LinearRegionFile> savingQueue = new LinkedBlockingQueue<>();
++    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(
++        new ThreadFactoryBuilder()
++            .setNameFormat("linear-flush-scheduler")
++            .build()
++    );
++    private final ExecutorService executor = Executors.newFixedThreadPool(
++        FoldenorConfig.linearFlushThreads,
++        new ThreadFactoryBuilder()
++            .setNameFormat("linear-flusher-%d")
++            .build()
++    );
++
++    public LinearRegionFileFlusher() {
++        Bukkit.getLogger().info("Using " + FoldenorConfig.linearFlushThreads + " threads for linear region flushing.");
++        scheduler.scheduleAtFixedRate(this::pollAndFlush, 0L, FoldenorConfig.linearFlushFrequency, TimeUnit.SECONDS);
++    }
++
++    public void scheduleSave(LinearRegionFile regionFile) {
++        if (savingQueue.contains(regionFile)) return;
++        savingQueue.add(regionFile);
++    }
++
++    private void pollAndFlush() {
++        while (!savingQueue.isEmpty()) {
++            LinearRegionFile regionFile = savingQueue.poll();
++            if (!regionFile.closed && regionFile.isMarkedToSave())
++                executor.execute(regionFile::flushWrapper);
++        }
++    }
++
++    public void shutdown() {
++        executor.shutdown();
++        scheduler.shutdown();
 +    }
 +}

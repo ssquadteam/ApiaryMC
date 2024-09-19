@@ -50,7 +50,6 @@ Credits:
 -------------
 Thanks to these projects below. If these excellent projects hadn't appeared, Apiary would not have been so great.
 
-- [Foldenor](https://github.com/Edenor-Minecraft/Foldenor)
 - [Purpur](https://github.com/PurpurMC/Purpur)
 - [Slice](https://github.com/Cryptite/Slice)
 - [Leaves](https://github.com/LeavesMC/Leaves)

@@ -4,11 +4,11 @@ Date: Tue, 6 Aug 2024 19:29:22 +0400
 Subject: [PATCH] SparklyPaper Skip 'MapItem#update()' if the map does not have
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index dd3d35a8870022d6f260020377c97e0be6970481..f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -45,6 +45,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -45,6 +45,8 @@ public class ApiaryConfig {
  
      public static boolean useVirtualThreadForAsyncScheduler = false;
  
@@ -17,7 +17,7 @@ index dd3d35a8870022d6f260020377c97e0be6970481..f57a71b1182b3b8e03d3f42ecc6e1b55
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -113,6 +115,7 @@ public class FoldenorConfig {
+@@ -113,6 +115,7 @@ public class ApiaryConfig {
      private static void readOptimizationSettings() {
          piglinSpawnChancePersentInPortal = getInt("optimizations.piglin-spawn-chance-persent-in-portal", 100,
              "Reduces piglin spawn in portal, by reducing change to spawn");
@@ -34,7 +34,7 @@ index e96f15814986109e5e947c7b3b210be6e56ba0ed..ea5a77d1f54bc6df33a78c3231cf04a5
  import java.util.List;
  import javax.annotation.Nullable;
 +
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.ChatFormatting;
  import net.minecraft.core.BlockPos;
  import net.minecraft.core.Direction;
@@ -43,7 +43,7 @@ index e96f15814986109e5e947c7b3b210be6e56ba0ed..ea5a77d1f54bc6df33a78c3231cf04a5
                  }
  
 -                if (!mapItemSavedData.locked && (selected || entity instanceof Player && ((Player)entity).getOffhandItem() == stack)) {
-+                    if (!mapItemSavedData.locked && (!FoldenorConfig.skipMapItemUpdatesIfNoBukkitRender || mapItemSavedData.mapView.getRenderers().stream().anyMatch(mapRenderer -> mapRenderer.getClass() == org.bukkit.craftbukkit.map.CraftMapRenderer.class)) && (selected || entity instanceof Player && ((Player)entity).getOffhandItem() == stack)) { // SparklyPaper - don't update maps if they don't have the CraftMapRenderer in the render list
++                    if (!mapItemSavedData.locked && (!ApiaryConfig.skipMapItemUpdatesIfNoBukkitRender || mapItemSavedData.mapView.getRenderers().stream().anyMatch(mapRenderer -> mapRenderer.getClass() == org.bukkit.craftbukkit.map.CraftMapRenderer.class)) && (selected || entity instanceof Player && ((Player)entity).getOffhandItem() == stack)) { // SparklyPaper - don't update maps if they don't have the CraftMapRenderer in the render list
                      this.update(world, entity, mapItemSavedData);
                  }
                  } // Folia - region threading

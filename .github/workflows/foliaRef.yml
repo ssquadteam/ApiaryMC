@@ -1,0 +1,48 @@
+name: Automatically update Folia commit
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ApiaryMC Repository
+        uses: actions/checkout@v3
+        with:
+          path: 'ApiaryMC'
+          token: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Checkout Folia Repository
+        uses: actions/checkout@v3
+        with:
+          path: 'Folia'
+          repository: "PaperMC/Folia"
+          ref: dev/1.20.6
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Get Folia Latest Commit Hash
+        id: foliaRef
+        run: |
+          ls
+          cd Folia
+          echo "::set-output name=foliaRef::$(git rev-parse HEAD)"
+          cd ..
+          
+      - name: Update foliaRef in ApiaryMC
+        run: |
+          cd ApiaryMC
+          sed -i "s/\(foliaRef\s*=\s*\).*/\1$PAPER_REF/" gradle.properties
+        env:
+          PAPER_REF: ${{ steps.foliaRef.outputs.foliaRef }}
+      - name: Check for changes and Write to repository
+        run: |
+          cd ApiaryMC
+          if ! git diff --quiet; then
+            git add gradle.properties
+            git config --global user.email "no-reply@github.com" && git config --global user.name "Github Actions"
+            git commit -m "Updated Upstream (Folia)"
+            git push
+          else
+            echo "No changes to commit."
+          fi

@@ -4,11 +4,11 @@ Date: Wed, 31 Jul 2024 14:54:16 +0400
 Subject: [PATCH] Send-null-entity-packets
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index 344a70e3c1274936d218757059c713bf9e75603b..c8c6631093ff2ebd23527e80778b35f9c44cc8bf 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -23,6 +23,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -23,6 +23,8 @@ public class ApiaryConfig {
      public static int version;
      static boolean verbose;
  
@@ -17,7 +17,7 @@ index 344a70e3c1274936d218757059c713bf9e75603b..c8c6631093ff2ebd23527e80778b35f9
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -63,6 +65,7 @@ public class FoldenorConfig {
+@@ -63,6 +65,7 @@ public class ApiaryConfig {
      }
  
      static void readConfig() {
@@ -25,7 +25,7 @@ index 344a70e3c1274936d218757059c713bf9e75603b..c8c6631093ff2ebd23527e80778b35f9
  
          try {
              config.save(CONFIG_FILE);
-@@ -71,6 +74,10 @@ public class FoldenorConfig {
+@@ -71,6 +74,10 @@ public class ApiaryConfig {
          }
      }
  
@@ -44,7 +44,7 @@ index 8ea2f24695f5dad55e21f238b69442513e7a90c6..38ca0acf3a1af7dcdd9e87e6d9e2e14c
  import net.minecraft.util.Mth;
  import org.bukkit.entity.Player;
  import org.bukkit.event.player.PlayerVelocityEvent;
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  // CraftBukkit end
  
  public class ServerEntity {
@@ -52,7 +52,7 @@ index 8ea2f24695f5dad55e21f238b69442513e7a90c6..38ca0acf3a1af7dcdd9e87e6d9e2e14c
                      packet1 = new ClientboundTeleportEntityPacket(this.entity);
                      flag4 = true;
                      flag5 = true;
-+                    if (!FoldenorConfig.sendNullEntityPackets && isNullMovePacket(packet1)) {
++                    if (!ApiaryConfig.sendNullEntityPackets && isNullMovePacket(packet1)) {
 +                        packet1 = null;
 +                    }
                  }
@@ -86,7 +86,7 @@ index 7a102b4e90fbc09b8653e5b566299efe24a04cf6..d1164f15c6b9ae221f6cae2bdb7d040c
  import java.util.stream.Stream;
  import javax.annotation.Nullable;
 +
-+import net.edenor.foldenor.config.FoldenorConfig;
++import net.ssquadteam.apiary.config.ApiaryConfig;
  import net.minecraft.BlockUtil;
  import net.minecraft.CrashReport;
  import net.minecraft.CrashReportCategory;

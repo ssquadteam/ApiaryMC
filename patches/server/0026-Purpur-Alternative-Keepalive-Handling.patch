@@ -4,11 +4,11 @@ Date: Tue, 6 Aug 2024 15:43:15 +0400
 Subject: [PATCH] Purpur-Alternative-Keepalive-Handling
 
 
-diff --git a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
 index 36cf79632b12c67291ccccfda7341ee543e607c6..3252f121394f9dff7025708eb8528809b3abc248 100644
---- a/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-+++ b/src/main/java/net/edenor/foldenor/config/FoldenorConfig.java
-@@ -39,6 +39,8 @@ public class FoldenorConfig {
+--- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
++++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+@@ -39,6 +39,8 @@ public class ApiaryConfig {
  
      public static boolean appleskinProtocol = false;
  
@@ -17,7 +17,7 @@ index 36cf79632b12c67291ccccfda7341ee543e607c6..3252f121394f9dff7025708eb8528809
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -97,6 +99,7 @@ public class FoldenorConfig {
+@@ -97,6 +99,7 @@ public class ApiaryConfig {
      protected static void readNetworkSettings(){
          sendNullEntityPackets = getBoolean("network.send-null-entity-packets", sendNullEntityPackets);
          appleskinProtocol = getBoolean("network.appleskin-protocol", appleskinProtocol);
@@ -42,7 +42,7 @@ index 6531c3173f0fd54196c11db3e6348e0afe617376..d5bb4d2a23687fe0dfc6c6920fc90580
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
 +        // Purpur start
-+        if (net.edenor.foldenor.config.FoldenorConfig.useAlternateKeepAlive) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.useAlternateKeepAlive) {
 +            if (this.keepAlivePending && !keepAlives.isEmpty() && keepAlives.contains(packet.getId())) {
 +                int ping = (int) (Util.getMillis() - packet.getId());
 +                this.latency = (this.latency * 3 + ping) / 4;
@@ -59,7 +59,7 @@ index 6531c3173f0fd54196c11db3e6348e0afe617376..d5bb4d2a23687fe0dfc6c6920fc90580
          long elapsedTime = currentTime - this.keepAliveTime;
  
 +        // Purpur start
-+        if (net.edenor.foldenor.config.FoldenorConfig.useAlternateKeepAlive) {
++        if (net.ssquadteam.apiary.config.ApiaryConfig.useAlternateKeepAlive) {
 +            if (elapsedTime >= 1000L) { // 1 second
 +                if (this.keepAlivePending && !this.processedDisconnect && keepAlives.size() * 1000L >= KEEPALIVE_LIMIT) {
 +                    this.disconnect(ServerCommonPacketListenerImpl.TIMEOUT_DISCONNECTION_MESSAGE, org.bukkit.event.player.PlayerKickEvent.Cause.TIMEOUT);
