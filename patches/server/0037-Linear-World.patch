@@ -71,9 +71,8 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675
  import com.google.common.base.Throwables;
  import com.google.common.collect.ImmutableMap;
 +import com.mojang.logging.LogUtils;
-+import net.minecraft.*
++import net.minecraft.server.MinecraftServer;
  import net.minecraft.core.registries.BuiltInRegistries;
- import net.minecraft.server.MinecraftServer;
  import net.minecraft.world.entity.EntityType;
 @@ -9,6 +10,8 @@ import org.bukkit.Bukkit;
  import org.bukkit.configuration.ConfigurationSection;
