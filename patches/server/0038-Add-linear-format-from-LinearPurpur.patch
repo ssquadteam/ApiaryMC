@@ -152,7 +152,7 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675
          dearEnabled = getBoolean("dab.enabled",  true);
          startDistance = getInt("dab.start-distance",  12,
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c2049ace0261c0a76b06d7f3da3514e1c12194aa..b46c81a22fa6f278646ef9d2066ba57d58436aad 100644
+index 05871b8addafaf11ce10f16a0fc8d0ad9619e3d0..abe3dbe11066469f030e4f7381f98d38537443d4 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1001,10 +1001,10 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
