@@ -5,7 +5,7 @@ Subject: [PATCH] Add linear format from LinearPurpur
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 51b933a204491c57dcecab58d4d2807f10ec33dc..42347c4b732784493993479b2c3d36558d0b59bf 100644
+index 0a9bcd472022cd7ea57110dd24928d5be021d649..d9e0ebc78b67c2c35d3db5c24fb67785b2a24c19 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -30,6 +30,10 @@ dependencies {
@@ -152,7 +152,7 @@ index f57a71b1182b3b8e03d3f42ecc6e1b55cb93b788..db2c92e8fd7d811639f3fb0bb7cff675
          dearEnabled = getBoolean("dab.enabled",  true);
          startDistance = getInt("dab.start-distance",  12,
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 87a722ca353c5ec20320e71c745fad7b3f33f08f..31900f484c82d41253e8d2471560d2f7222de719 100644
+index c2049ace0261c0a76b06d7f3da3514e1c12194aa..b46c81a22fa6f278646ef9d2066ba57d58436aad 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1001,10 +1001,10 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
