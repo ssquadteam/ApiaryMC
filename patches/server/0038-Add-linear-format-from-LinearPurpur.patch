@@ -5,7 +5,7 @@ Subject: [PATCH] Add linear format from LinearPurpur
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0a9bcd472022cd7ea57110dd24928d5be021d649..d9e0ebc78b67c2c35d3db5c24fb67785b2a24c19 100644
+index 51b933a204491c57dcecab58d4d2807f10ec33dc..42347c4b732784493993479b2c3d36558d0b59bf 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -30,6 +30,10 @@ dependencies {
