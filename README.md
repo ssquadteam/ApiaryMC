@@ -15,7 +15,6 @@
 ## Features
  - **Bukkit Plugins Support!** Just add folia-supported: true at the end of any plugin.yml.
  - **Various patches** blending from [other forks](https://github.com/ssquadteam/ApiaryMC#credits).
- - **Better Region Format** Support for the Linear region file format from [LinearPurpur](https://github.com/StupidCraft/LinearPurpur)
  - ...
 
 ## Contact
