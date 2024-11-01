@@ -13,6 +13,7 @@ index db2c92e8fd7d811639f3fb0bb7cff675366b8a10..448c311508b57978a76713da538580cf
  import java.util.Collections;
  import java.util.List;
 +import java.util.Locale;
+ import net.minecraft.world.entity.Entity;
  import java.util.Map;
  import java.util.logging.Level;
  
