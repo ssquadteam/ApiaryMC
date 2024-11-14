@@ -13,7 +13,7 @@ plugins {
 
 rootProject.name = "apiary"
 
-for (name in listOf("Apiary-API", "Apiary-Server")) {
+for (name in listOf("ApiaryMC-API", "ApiaryMC-Server")) {
     val projName = name.lowercase(Locale.ENGLISH)
     include(projName)
     findProject(":$projName")!!.projectDir = file(name)

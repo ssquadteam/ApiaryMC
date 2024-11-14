@@ -51,7 +51,7 @@ subprojects {
 }
 
 paperweight {
-    serverProject.set(project(":apiary-server"))
+    serverProject.set(project(":apiarymc-server"))
 
     remapRepo.set(paperMavenPublicUrl)
     decompileRepo.set(paperMavenPublicUrl)
@@ -65,10 +65,10 @@ paperweight {
             serverSourceDirPath.set("folia-server")
 
             apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
-            apiOutputDir.set(layout.projectDirectory.dir("Apiary-api"))
+            apiOutputDir.set(layout.projectDirectory.dir("ApiaryMC-api"))
 
             serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
-            serverOutputDir.set(layout.projectDirectory.dir("Apiary-server"))
+            serverOutputDir.set(layout.projectDirectory.dir("ApiaryMC-server"))
         }
 
         patchTasks.register("generatedApi") {
