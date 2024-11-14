@@ -5,10 +5,10 @@ Subject: [PATCH] Leaf: Optimize check nearby fire or lava on entity move
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 434b2e2446dbe943baee572dd8caea8025168673..d87f8e37f61b9428277271facf95864719f05110 100644
+index 5c3e7f346271c21dbff8cd9308f91fe4e2024aed..49ab0ca06f19cf2f85862e4c1c22f5e36587ba8c 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1310,9 +1310,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -1312,9 +1312,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                  float f = this.getBlockSpeedFactor();
  
                  this.setDeltaMovement(this.getDeltaMovement().multiply((double) f, 1.0D, (double) f));
@@ -24,7 +24,7 @@ index 434b2e2446dbe943baee572dd8caea8025168673..d87f8e37f61b9428277271facf958647
                      if (this.remainingFireTicks <= 0) {
                          this.setRemainingFireTicks(-this.getFireImmuneTicks());
                      }
-@@ -1338,6 +1341,20 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -1340,6 +1343,20 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
          // Paper end - detailed watchdog information
      }
  

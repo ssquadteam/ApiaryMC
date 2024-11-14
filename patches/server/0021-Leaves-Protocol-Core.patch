@@ -54,10 +54,10 @@ index 1967c43ee3a12e63365cc40ee6565307e2fd73cf..6e376d0db5321d8e9b6e0b54617ffd17
  
          assert isValidPath(path);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index ac56b02498eb38883ae462be6ef3d15cb2a855aa..fca787f92827019e776a6ccae8f90fe2b12c5177 100644
+index 511992c31d70e806bba68737048ca760bef1def0..b97ce0451ce12be8e7e499e1b9e4527b6851fb7d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1922,6 +1922,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1920,6 +1920,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              GameTestTicker.SINGLETON.tick();
          }
  
@@ -67,10 +67,10 @@ index ac56b02498eb38883ae462be6ef3d15cb2a855aa..fca787f92827019e776a6ccae8f90fe2
  
          MinecraftTimings.tickablesTimer.startTiming(); // Spigot // Paper
 diff --git a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-index d766bb360eb98bab1e067cad032b54fa6455f386..6531c3173f0fd54196c11db3e6348e0afe617376 100644
+index ea99a4e39cdfb4eeebc299030f7768b9c684df4e..58bb790e44809cdd80a34809e700584794c079d6 100644
 --- a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-@@ -161,6 +161,11 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -162,6 +162,11 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
  
      @Override
      public void handleCustomPayload(ServerboundCustomPayloadPacket packet) {
@@ -82,7 +82,7 @@ index d766bb360eb98bab1e067cad032b54fa6455f386..6531c3173f0fd54196c11db3e6348e0a
          // Paper start - Brand support
          if (packet.payload() instanceof net.minecraft.network.protocol.common.custom.BrandPayload brandPayload) {
              this.player.clientBrandName = brandPayload.brand();
-@@ -178,6 +183,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -179,6 +184,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
                  String channels = payload.toString(com.google.common.base.Charsets.UTF_8);
                  for (String channel : channels.split("\0")) {
                      this.getCraftPlayer().addChannel(channel);
@@ -91,7 +91,7 @@ index d766bb360eb98bab1e067cad032b54fa6455f386..6531c3173f0fd54196c11db3e6348e0a
              } catch (Exception ex) {
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t register custom payload", ex);
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 683b5c164bf40a9d900cb96134350f2fdd06b620..9741cad817e5bb0d8efc134f7fdb9f6142891425 100644
+index 93ceea16e436e9227bc983417b258c307156198e..f692a5da9e9a378e056e75e94593301a03c2325b 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -443,6 +443,8 @@ public abstract class PlayerList {
@@ -112,10 +112,10 @@ index 683b5c164bf40a9d900cb96134350f2fdd06b620..9741cad817e5bb0d8efc134f7fdb9f61
          ServerLevel worldserver = entityplayer.serverLevel();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 009cfbf2220c34ac4a9fcc22f39e4a5e005f5d5b..e1e269cb53418632304cb1263fec2051f26d2db3 100644
+index 23a317ac9e20c2bb04841e8bb5ce76ac95b105f5..1d6ec67bd0dc8b77006f44927f9702e50f4491b3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -489,6 +489,7 @@ public final class CraftServer implements Server {
+@@ -490,6 +490,7 @@ public final class CraftServer implements Server {
          this.potionBrewer = new io.papermc.paper.potion.PaperPotionBrewer(console); // Paper - custom potion mixes
          datapackManager = new io.papermc.paper.datapack.PaperDatapackManager(console.getPackRepository()); // Paper
          this.spark = new io.papermc.paper.SparksFly(this); // Paper - spark
@@ -123,7 +123,7 @@ index 009cfbf2220c34ac4a9fcc22f39e4a5e005f5d5b..e1e269cb53418632304cb1263fec2051
      }
  
      public boolean getCommandBlockOverride(String command) {
-@@ -1155,6 +1156,7 @@ public final class CraftServer implements Server {
+@@ -1157,6 +1158,7 @@ public final class CraftServer implements Server {
          this.spark.registerCommandBeforePlugins(this); // Paper - spark
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");

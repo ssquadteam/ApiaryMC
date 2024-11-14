@@ -1,0 +1,74 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AltronMaxX <max06112004@gmail.com>
+Date: Tue, 5 Nov 2024 15:38:21 +0400
+Subject: [PATCH] Redirect 'teleport' to 'teleportAsync'
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+index 7be80f2774b5ec3d0bede096da8f2b6d1cf7b09b..0f35888f9da10e72bd4ecdbe23f04718af5eb8bc 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
+ import java.util.List;
+ import java.util.Set;
+ import java.util.UUID;
++import java.util.concurrent.ExecutionException;
++
+ import net.minecraft.nbt.CompoundTag;
+ import net.minecraft.nbt.Tag;
+ import net.minecraft.network.chat.Component;
+@@ -230,6 +232,12 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+ 
+     @Override
+     public boolean teleport(Location location) {
++        if (true)
++            try {
++                return this.teleportAsync(location, TeleportCause.PLUGIN, new io.papermc.paper.entity.TeleportFlag[0]).get();
++            } catch (InterruptedException | ExecutionException e) {
++                throw new RuntimeException(e);
++            }
+         return this.teleport(location, TeleportCause.PLUGIN);
+     }
+ 
+@@ -241,8 +249,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+ 
+     @Override
+     public boolean teleport(Location location, TeleportCause cause, io.papermc.paper.entity.TeleportFlag... flags) {
+-        // Folia start - region threading
+         if (true) {
++            server.getLogger().warning("Must use teleportAsync while in region threading!");
++            try {
++                return teleportAsync(location, cause, flags).get();
++            } catch (InterruptedException | ExecutionException e) {
++                throw new RuntimeException(e);
++            }
++        }
++        // Folia start - region threading
++        if (false) {
+             throw new UnsupportedOperationException("Must use teleportAsync while in region threading");
+         }
+         // Folia end - region threading
+@@ -300,11 +316,23 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+ 
+     @Override
+     public boolean teleport(org.bukkit.entity.Entity destination) {
++        if (true)
++            try {
++                return this.teleportAsync(destination.getLocation(), TeleportCause.PLUGIN, new io.papermc.paper.entity.TeleportFlag[0]).get();
++            } catch (InterruptedException | ExecutionException e) {
++                throw new RuntimeException(e);
++            }
+         return this.teleport(destination.getLocation());
+     }
+ 
+     @Override
+     public boolean teleport(org.bukkit.entity.Entity destination, TeleportCause cause) {
++        if (true)
++            try {
++                return this.teleportAsync(destination.getLocation(), cause, new io.papermc.paper.entity.TeleportFlag[0]).get();
++            } catch (InterruptedException | ExecutionException e) {
++                throw new RuntimeException(e);
++            }
+         return this.teleport(destination.getLocation(), cause);
+     }
+ 

@@ -4,11 +4,11 @@ Date: Tue, 6 Aug 2024 15:43:15 +0400
 Subject: [PATCH] Purpur-Alternative-Keepalive-Handling
 
 
-diff --git a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
+diff --git a/src/main/java/net/ssquadteam/apiarymc/config/ApiaryMCConfig.java b/src/main/java/net/ssquadteam/apiarymc/config/ApiaryMCConfig.java
 index 36cf79632b12c67291ccccfda7341ee543e607c6..3252f121394f9dff7025708eb8528809b3abc248 100644
---- a/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
-+++ b/src/main/java/net/ssquadteam/apiary/config/ApiaryConfig.java
-@@ -39,6 +39,8 @@ public class ApiaryConfig {
+--- a/src/main/java/net/ssquadteam/apiarymc/config/ApiaryMCConfig.java
++++ b/src/main/java/net/ssquadteam/apiarymc/config/ApiaryMCConfig.java
+@@ -39,6 +39,8 @@ public class ApiaryMCConfig {
  
      public static boolean appleskinProtocol = false;
  
@@ -17,7 +17,7 @@ index 36cf79632b12c67291ccccfda7341ee543e607c6..3252f121394f9dff7025708eb8528809
      public static void init(File configFile) {
          init(configFile, true);
      }
-@@ -97,6 +99,7 @@ public class ApiaryConfig {
+@@ -97,6 +99,7 @@ public class ApiaryMCConfig {
      protected static void readNetworkSettings(){
          sendNullEntityPackets = getBoolean("network.send-null-entity-packets", sendNullEntityPackets);
          appleskinProtocol = getBoolean("network.appleskin-protocol", appleskinProtocol);
@@ -26,10 +26,10 @@ index 36cf79632b12c67291ccccfda7341ee543e607c6..3252f121394f9dff7025708eb8528809
  
      private static void readDynamicActivationOfBrains() throws IOException {
 diff --git a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-index 6531c3173f0fd54196c11db3e6348e0afe617376..d5bb4d2a23687fe0dfc6c6920fc90580a366019f 100644
+index 58bb790e44809cdd80a34809e700584794c079d6..a2363d65fcfac166ac260cef969e4af3ea91383c 100644
 --- a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-@@ -74,6 +74,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -79,6 +79,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
      private long keepAliveChallenge;
      private long closedListenerTime;
      private boolean closed = false;
@@ -37,12 +37,12 @@ index 6531c3173f0fd54196c11db3e6348e0afe617376..d5bb4d2a23687fe0dfc6c6920fc90580
      private int latency;
      private volatile boolean suspendFlushingOnServerThread = false;
      public final java.util.Map<java.util.UUID, net.kyori.adventure.resource.ResourcePackCallback> packCallbacks = new java.util.concurrent.ConcurrentHashMap<>(); // Paper - adventure resource pack callbacks
-@@ -136,6 +137,16 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -141,6 +142,16 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
 +        // Purpur start
-+        if (net.ssquadteam.apiary.config.ApiaryConfig.useAlternateKeepAlive) {
++        if (net.ssquadteam.apiarymc.config.ApiaryMCConfig.useAlternateKeepAlive) {
 +            if (this.keepAlivePending && !keepAlives.isEmpty() && keepAlives.contains(packet.getId())) {
 +                int ping = (int) (Util.getMillis() - packet.getId());
 +                this.latency = (this.latency * 3 + ping) / 4;
@@ -54,12 +54,12 @@ index 6531c3173f0fd54196c11db3e6348e0afe617376..d5bb4d2a23687fe0dfc6c6920fc90580
          //PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel()); // CraftBukkit // Paper - handle ServerboundKeepAlivePacket async
          if (this.keepAlivePending && packet.getId() == this.keepAliveChallenge) {
              int i = (int) (Util.getMillis() - this.keepAliveTime);
-@@ -271,6 +282,21 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -272,6 +283,21 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
          long currentTime = Util.getMillis();
          long elapsedTime = currentTime - this.keepAliveTime;
  
 +        // Purpur start
-+        if (net.ssquadteam.apiary.config.ApiaryConfig.useAlternateKeepAlive) {
++        if (net.ssquadteam.apiarymc.config.ApiaryMCConfig.useAlternateKeepAlive) {
 +            if (elapsedTime >= 1000L) { // 1 second
 +                if (this.keepAlivePending && !this.processedDisconnect && keepAlives.size() * 1000L >= KEEPALIVE_LIMIT) {
 +                    this.disconnect(ServerCommonPacketListenerImpl.TIMEOUT_DISCONNECTION_MESSAGE, org.bukkit.event.player.PlayerKickEvent.Cause.TIMEOUT);

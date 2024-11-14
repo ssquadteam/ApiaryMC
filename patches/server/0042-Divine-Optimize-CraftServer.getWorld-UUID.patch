@@ -5,7 +5,7 @@ Subject: [PATCH] Divine: Optimize CraftServer.getWorld(UUID)
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e1e269cb53418632304cb1263fec2051f26d2db3..e2b6a2c2ee92b61df28d411d0f3795c2560a53d7 100644
+index 1d6ec67bd0dc8b77006f44927f9702e50f4491b3..9a57aa7006b01b685b19bd23d76fd839a882fee4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -44,6 +44,7 @@ import java.util.logging.Logger;
@@ -24,7 +24,7 @@ index e1e269cb53418632304cb1263fec2051f26d2db3..e2b6a2c2ee92b61df28d411d0f3795c2
      private YamlConfiguration configuration;
      private YamlConfiguration commandsConfiguration;
      private final Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
-@@ -1538,6 +1540,7 @@ public final class CraftServer implements Server {
+@@ -1540,6 +1542,7 @@ public final class CraftServer implements Server {
              this.getLogger().log(Level.SEVERE, null, ex);
          }
  
@@ -32,7 +32,7 @@ index e1e269cb53418632304cb1263fec2051f26d2db3..e2b6a2c2ee92b61df28d411d0f3795c2
          this.worlds.remove(world.getName().toLowerCase(Locale.ROOT));
          this.console.removeLevel(handle);
          return true;
-@@ -1556,6 +1559,7 @@ public final class CraftServer implements Server {
+@@ -1558,6 +1561,7 @@ public final class CraftServer implements Server {
  
      @Override
      public World getWorld(UUID uid) {
@@ -40,7 +40,7 @@ index e1e269cb53418632304cb1263fec2051f26d2db3..e2b6a2c2ee92b61df28d411d0f3795c2
          for (World world : this.worlds.values()) {
              if (world.getUID().equals(uid)) {
                  return world;
-@@ -1579,6 +1583,7 @@ public final class CraftServer implements Server {
+@@ -1581,6 +1585,7 @@ public final class CraftServer implements Server {
              System.out.println("World " + world.getName() + " is a duplicate of another world and has been prevented from loading. Please delete the uid.dat file from " + world.getName() + "'s world directory if you want to be able to load the duplicate world.");
              return;
          }

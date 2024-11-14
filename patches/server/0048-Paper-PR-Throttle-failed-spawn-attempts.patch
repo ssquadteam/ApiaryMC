@@ -8,7 +8,7 @@ diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.jav
 index aa0f756aac5b9119aaf0070095953402f82bbbc5..83e3e0b1dd1a5ebef1149cb44ec7b2e6f852b2a4 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -187,6 +187,15 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -190,6 +190,15 @@ public class WorldConfiguration extends ConfigurationPart {
              @MergeMap
              public Reference2IntMap<MobCategory> ticksPerSpawn = Util.make(new Reference2IntOpenHashMap<>(NaturalSpawner.SPAWNING_CATEGORIES.length), map -> Arrays.stream(NaturalSpawner.SPAWNING_CATEGORIES).forEach(mobCategory -> map.put(mobCategory, -1)));
  
